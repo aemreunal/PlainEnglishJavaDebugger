@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Plain English Java Debugger"
+            id="PlainEnglishJavaDebugger">
+      </category>
+      <view
+            name="Translator View"
+            icon="icons/sample.gif"
+            category="PlainEnglishJavaDebugger"
+            class="plainenglishjavadebugger.views.translatorView.TranslatorView"
+            id="plainenglishjavadebugger.views.translatorView.TranslatorView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="right"
+               id="plainenglishjavadebugger.views.translatorView.TranslatorView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="PlainEnglishJavaDebugger.actionSet"
+            label="Plain English Java Debugger"
+            visible="true">
+         <menu
+               id="topToolbarMenu"
+               label="PEJD">
+            <separator
+                  name="PEJD_group">
+            </separator>
+         </menu>
+         <action
+               class="plainenglishjavadebugger.actions.MenuActionSet"
+               icon="icons/sample.gif"
+               id="plainenglishjavadebugger.actions.MenuActionSet"
+               label="&amp;Translator View"
+               menubarPath="topToolbarMenu/sampleGroup"
+               toolbarPath="PEJD_group"
+               tooltip="Translator View">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.debug.breakpointListeners">
+         <breakpointActionDelegate
+          	class="plainenglishjavadebugger.actions.DebugBreakpointListener"
+          	id="plainenglishjavadebugger.actions.DebugBreakpointListener">
+    	</breakpointActionDelegate>
+   </extension>
+
+</plugin>
