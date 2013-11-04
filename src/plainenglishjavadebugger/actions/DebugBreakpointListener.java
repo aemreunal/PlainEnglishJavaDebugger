@@ -57,6 +57,7 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	
 	@Override
 	public int breakpointHit(IJavaThread thread, IJavaBreakpoint breakpoint) {
+		// This is the only point we can be sure that the debugger is running.
 		System.out.println("Just hit a breakpoint!");
 		setDebugInfo(thread, breakpoint);
 		return 0;
@@ -66,6 +67,12 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 		this.thread = thread;
 		this.breakpoint = breakpoint;
 		model.setDebugInfo(thread, breakpoint);
+	}
+	
+	private void removeDebugInfo() {
+		thread = null;
+		breakpoint = null;
+		model.removeDebugInfo();
 	}
 	
 	@Override
@@ -84,6 +91,7 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 		numBreakpoints--;
 		if (numBreakpoints == 0) {
 			System.out.println("The debugger has stopped!");
+			removeDebugInfo();
 		}
 	}
 	
