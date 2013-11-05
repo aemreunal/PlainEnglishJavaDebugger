@@ -2,9 +2,7 @@ package plainenglishjavadebugger.views.translatorView;
 
 import java.util.ArrayList;
 
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jdt.debug.core.IJavaBreakpoint;
 import org.eclipse.jdt.debug.core.IJavaThread;
@@ -18,7 +16,12 @@ import plainenglishjavadebugger.actions.DebugBreakpointListener;
  * emre.unal@ozu.edu.tr
  */
 
-public class TranslatorViewModel implements IDebugEventSetListener {
+/*
+ * Proper actions for debug events:
+ * http://grepcode.com/file/repository.grepcode.com/java/eclipse.org/4.3/org.eclipse.debug/core/3.8.0/org/eclipse/debug/core/DebugEvent.java#DebugEvent
+ */
+
+public class TranslatorViewModel {
 	private final TranslatorView view;
 	private final DebugBreakpointListener listener;
 	
@@ -56,7 +59,6 @@ public class TranslatorViewModel implements IDebugEventSetListener {
 	public void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
 		this.thread = thread;
 		this.breakpoint = breakpoint;
-		// JavaDebugOptionsManager.getDefault().
 		setDebugging(true);
 	}
 	
@@ -80,8 +82,16 @@ public class TranslatorViewModel implements IDebugEventSetListener {
 			 */
 			if (isDebugging) {
 				IStackFrame topStackFrame = thread.getTopStackFrame();
-				debuggedLineNumber = topStackFrame.getLineNumber();
-				debuggedClassPath = topStackFrame.getLaunch().getSourceLocator().getSourceElement(thread.getTopStackFrame()).toString();
+				Object debuggedClassSourceElement = topStackFrame.getLaunch().getSourceLocator().getSourceElement(thread.getTopStackFrame());
+				if (debuggedClassSourceElement != null /* Which means it's not a built-in, closed-source library class */) {
+					debuggedLineNumber = topStackFrame.getLineNumber();
+					debuggedClassPath = debuggedClassSourceElement.toString();
+					TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "", debuggedClassPath + " " + debuggedLineNumber);
+					addElement(translatedLine);
+					printDebugInfo();
+				} else {
+					System.out.println("Undebuggable, closed-source class.");
+				}
 			}
 			// System.out.println(thread.getTopStackFrame().getModelIdentifier());
 			// System.out.println(thread.getTopStackFrame().getName());
@@ -104,27 +114,8 @@ public class TranslatorViewModel implements IDebugEventSetListener {
 		this.isDebugging = isDebugging;
 	}
 	
-	@Override
-	public void handleDebugEvents(DebugEvent[] debugEvents) {
-		getThreadInfo();
+	public void printDebugInfo() {
 		System.out.println("The debugged class: " + debuggedClassPath);
 		System.out.println("The debugged line number: " + debuggedLineNumber);
-		for (DebugEvent debugEvent : debugEvents) {
-			System.out.println(debugEvent.toString());
-		}
 	}
-	
-	/*
-	 * @Override
-	 * public void eventSetComplete(Event arg0, JDIDebugTarget arg1, boolean arg2, EventSet arg3) {
-	 * // TODO Auto-generated method stub
-	 * System.out.println(arg0);
-	 * }
-	 * 
-	 * @Override
-	 * public boolean handleEvent(Event arg0, JDIDebugTarget arg1, boolean arg2, EventSet arg3) {
-	 * System.out.println(arg0);
-	 * return false;
-	 * }
-	 */
 }
