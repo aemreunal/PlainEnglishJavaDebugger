@@ -8,6 +8,7 @@ import org.eclipse.jdt.debug.core.IJavaBreakpoint;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
+import plainenglishjavadebugger.translationModule.fileReader.JavaClassReader;
 
 /*
  * This code belongs to:
@@ -24,6 +25,7 @@ import plainenglishjavadebugger.actions.DebugBreakpointListener;
 public class TranslatorViewModel {
 	private final TranslatorView view;
 	private final DebugBreakpointListener listener;
+	private final JavaClassReader sourceFileReader;
 	
 	private boolean isDebugging = false;
 	private IJavaThread thread;
@@ -37,6 +39,7 @@ public class TranslatorViewModel {
 	public TranslatorViewModel(TranslatorView view) {
 		this.view = view;
 		listener = new DebugBreakpointListener(this);
+		sourceFileReader = new JavaClassReader();
 	}
 	
 	public ArrayList<TranslatedLine> getElements() {
@@ -86,7 +89,9 @@ public class TranslatorViewModel {
 				if (debuggedClassSourceElement != null /* Which means it's not a built-in, closed-source library class */) {
 					debuggedLineNumber = topStackFrame.getLineNumber();
 					debuggedClassPath = debuggedClassSourceElement.toString();
-					TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "", debuggedClassPath + " " + debuggedLineNumber);
+					// TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "",
+					// debuggedClassPath + " " + debuggedLineNumber);
+					TranslatedLine translatedLine = new TranslatedLine(sourceFileReader.readLine(debuggedClassPath, debuggedLineNumber), debuggedClassPath + " " + debuggedLineNumber, debuggedClassPath + " " + debuggedLineNumber);
 					addElement(translatedLine);
 					printDebugInfo();
 				} else {
