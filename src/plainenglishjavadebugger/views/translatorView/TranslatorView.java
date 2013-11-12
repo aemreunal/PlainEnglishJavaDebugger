@@ -25,9 +25,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.BundleException;
 
-import plainenglishjavadebugger.views.translatorView.actions.AddLineAction;
+import plainenglishjavadebugger.views.translatorView.actions.StepOverTranslateAction;
 import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
-import plainenglishjavadebugger.views.translatorView.actions.RemoveLineAction;
+import plainenglishjavadebugger.views.translatorView.actions.StepIntoTranslateAction;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -119,8 +119,8 @@ public class TranslatorView extends ViewPart {
 	}
 	
 	private void makeActions() {
-		addLineAction = new AddLineAction(this);
-		removeLineAction = new RemoveLineAction(this);
+		addLineAction = new StepOverTranslateAction(this);
+		removeLineAction = new StepIntoTranslateAction(this);
 		doubleClickAction = new ListDoubleClickAction(this);
 	}
 	

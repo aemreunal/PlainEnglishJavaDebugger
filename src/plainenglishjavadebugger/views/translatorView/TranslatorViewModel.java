@@ -89,9 +89,9 @@ public class TranslatorViewModel {
 				if (debuggedClassSourceElement != null /* Which means it's not a built-in, closed-source library class */) {
 					debuggedLineNumber = topStackFrame.getLineNumber();
 					debuggedClassPath = debuggedClassSourceElement.toString();
-					// TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "",
-					// debuggedClassPath + " " + debuggedLineNumber);
-					TranslatedLine translatedLine = new TranslatedLine(sourceFileReader.readLine(debuggedClassPath, debuggedLineNumber), debuggedClassPath + " " + debuggedLineNumber, debuggedClassPath + " " + debuggedLineNumber);
+					TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "", debuggedClassPath + " " + debuggedLineNumber);
+					// TranslatedLine translatedLine = new TranslatedLine(sourceFileReader.readLine(debuggedClassPath, debuggedLineNumber),
+					// debuggedClassPath + " " + debuggedLineNumber, debuggedClassPath + " " + debuggedLineNumber);
 					addElement(translatedLine);
 					printDebugInfo();
 				} else {
@@ -104,7 +104,6 @@ public class TranslatorViewModel {
 			// System.out.println(thread.getTopStackFrame().getClass().getSimpleName());
 			// System.out.println(thread.getTopStackFrame().getClass().getCanonicalName());
 			// System.out.println(thread.getTopStackFrame().getDebugTarget().getName());
-			// System.out.println(thread.getTopStackFrame().getLaunch().getSourceLocator().getSourceElement(thread.getTopStackFrame()));
 			// System.out.println(thread.getTopStackFrame().getLaunch().getDebugTarget().getName());
 		} catch (DebugException e) {
 			e.printStackTrace();
@@ -122,5 +121,9 @@ public class TranslatorViewModel {
 	public void printDebugInfo() {
 		System.out.println("The debugged class: " + debuggedClassPath);
 		System.out.println("The debugged line number: " + debuggedLineNumber);
+	}
+	
+	public synchronized IJavaThread getThread() {
+		return thread;
 	}
 }
