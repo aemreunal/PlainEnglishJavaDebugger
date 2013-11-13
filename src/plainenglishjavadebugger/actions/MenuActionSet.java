@@ -1,10 +1,13 @@
 package plainenglishjavadebugger.actions;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+
+import plainenglishjavadebugger.views.translatorView.TranslatorView;
 
 /**
  * Our sample action implements workbench action delegate.
@@ -37,14 +40,14 @@ public class MenuActionSet implements IWorkbenchWindowActionDelegate {
 	
 	@Override
 	public void run(IAction action) {
-		MessageDialog.openInformation(this.window.getShell(), "Plain English Java Debugger", "Hello, Eclipse world");
-		
-		// try {
-		// this.window.getActivePage().showView(ID);
-		// } catch (PartInitException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		// MessageDialog.openInformation(window.getShell(), "Plain English Java Debugger", "Hello, Eclipse world");
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(new TranslatorView());
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(TranslatorView.ID);
+		} catch (PartInitException e) {
+			System.err.println("Unable to show the Translator View!");
+			e.printStackTrace();
+		}
 	}
 	
 	/**

@@ -2,10 +2,8 @@ package plainenglishjavadebugger.views.translatorView;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -16,18 +14,16 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.BundleException;
 
-import plainenglishjavadebugger.views.translatorView.actions.StepOverTranslateAction;
 import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
 import plainenglishjavadebugger.views.translatorView.actions.StepIntoTranslateAction;
+import plainenglishjavadebugger.views.translatorView.actions.StepOverTranslateAction;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -51,14 +47,21 @@ public class TranslatorView extends ViewPart {
 	private final TranslatorViewModel model;
 	
 	private TableViewer viewer;
-	private Action addLineAction;
-	private Action removeLineAction;
-	private Action doubleClickAction;
+	private Action stepOverTranslateAction;
+	private Action stepIntoTranslateAction;
+	private Action listDoubleClickAction;
 	
 	private String[] tableColNames = { "Step #", "Short Translation" };
 	
 	public TranslatorView() {
 		model = new TranslatorViewModel(this);
+		try {
+			Platform.getBundle("PlainEnglishJavaDebugger").start();
+			System.out.println("Started the plug-in.");
+		} catch (BundleException e) {
+			System.err.println("Unable to start the plug-in!");
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -119,37 +122,21 @@ public class TranslatorView extends ViewPart {
 	}
 	
 	private void makeActions() {
-		addLineAction = new StepOverTranslateAction(this);
-		removeLineAction = new StepIntoTranslateAction(this);
-		doubleClickAction = new ListDoubleClickAction(this);
+		stepOverTranslateAction = new StepOverTranslateAction(this);
+		stepIntoTranslateAction = new StepIntoTranslateAction(this);
+		listDoubleClickAction = new ListDoubleClickAction(this);
 	}
 	
 	private void hookContextMenu() {
-		MenuManager menuMgr = new MenuManager("#PopupMenu");
-		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(new IMenuListener() {
-			@Override
-			public void menuAboutToShow(IMenuManager manager) {
-				TranslatorView.this.fillContextMenu(manager);
-			}
-		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
+		TranslatorViewMenuManager menuMgr = new TranslatorViewMenuManager(this, viewer.getControl());
 		getSite().registerContextMenu(menuMgr, viewer);
-	}
-	
-	private void fillContextMenu(IMenuManager manager) {
-		manager.add(addLineAction);
-		manager.add(removeLineAction);
-		// Other plug-ins can contribute their actions here
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
 	private void hookDoubleClickAction() {
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
+				listDoubleClickAction.run();
 			}
 		});
 	}
@@ -162,15 +149,15 @@ public class TranslatorView extends ViewPart {
 	
 	private void fillLocalPullDown(IMenuManager manager) {
 		// Adds actions to the view's drop down menu, the down-facing triangle to the top right.
-		manager.add(addLineAction);
+		manager.add(stepOverTranslateAction);
 		manager.add(new Separator());
-		manager.add(removeLineAction);
+		manager.add(stepIntoTranslateAction);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		// Adds actions to the view's tool bar as small icons on the top right, to the left of the 'minimize' button.
-		manager.add(addLineAction);
-		manager.add(removeLineAction);
+		manager.add(stepOverTranslateAction);
+		manager.add(stepIntoTranslateAction);
 	}
 	
 	@Override
@@ -181,13 +168,13 @@ public class TranslatorView extends ViewPart {
 	@Override
 	public void dispose() {
 		System.out.println("In the dispose method of 'TranslatorView'");
-		try {
-			Platform.getBundle("PlainEnglishJavaDebugger").stop(); // DOES NOT STOP THE PLUG-IN!
-			System.out.println("Stopped the plug-in.");
-		} catch (BundleException e) {
-			System.err.println("Unable to stop the plug-in!");
-			e.printStackTrace();
-		}
+		// try {
+		// Platform.getBundle("PlainEnglishJavaDebugger").stop(); // DOES NOT STOP THE PLUG-IN!
+		// System.out.println("Stopped the plug-in.");
+		// } catch (BundleException e) {
+		// System.err.println("Unable to stop the plug-in!");
+		// e.printStackTrace();
+		// }
 	}
 	
 	public TranslatorViewModel getModel() {
@@ -209,4 +196,17 @@ public class TranslatorView extends ViewPart {
 	public void showError(String title, String message) {
 		MessageDialog.openError(viewer.getControl().getShell(), title, message);
 	}
+	
+	public synchronized Action getStepOverTranslateAction() {
+		return stepOverTranslateAction;
+	}
+	
+	public synchronized Action getStepIntoTranslateAction() {
+		return stepIntoTranslateAction;
+	}
+	
+	public synchronized Action getListDoubleClickAction() {
+		return listDoubleClickAction;
+	}
+	
 }
