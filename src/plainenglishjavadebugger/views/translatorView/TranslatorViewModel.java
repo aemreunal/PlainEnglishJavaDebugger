@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
-import org.eclipse.jdt.debug.core.IJavaBreakpoint;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
@@ -22,6 +21,7 @@ import plainenglishjavadebugger.translationModule.fileReader.JavaClassReader;
  * http://grepcode.com/file/repository.grepcode.com/java/eclipse.org/4.3/org.eclipse.debug/core/3.8.0/org/eclipse/debug/core/DebugEvent.java#DebugEvent
  */
 
+@SuppressWarnings("unused")
 public class TranslatorViewModel {
 	private final TranslatorView view;
 	private final DebugBreakpointListener listener;
@@ -29,8 +29,6 @@ public class TranslatorViewModel {
 	
 	private boolean isDebugging = false;
 	private IJavaThread thread;
-	private IJavaBreakpoint breakpoint;
-	
 	private int debuggedLineNumber;
 	private String debuggedClassPath;
 	
@@ -59,15 +57,13 @@ public class TranslatorViewModel {
 		view.refresh();
 	}
 	
-	public void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
+	public void setDebugInfo(IJavaThread thread) {
 		this.thread = thread;
-		this.breakpoint = breakpoint;
 		setDebugging(true);
 	}
 	
 	public void removeDebugInfo() {
 		thread = null;
-		breakpoint = null;
 		setDebugging(false);
 	}
 	
@@ -83,6 +79,12 @@ public class TranslatorViewModel {
 			 * System.out.println(stackFrame.getLineNumber()); // Successfully getting the line number of the stack frame!
 			 * }
 			 */
+			
+			/*
+			 * http://codeandme.blogspot.nl/2013/11/debugger-7-source-lookup.html
+			 * http://www.planeteclipse.org/planet/
+			 */
+			
 			if (isDebugging) {
 				IStackFrame topStackFrame = thread.getTopStackFrame();
 				Object debuggedClassSourceElement = topStackFrame.getLaunch().getSourceLocator().getSourceElement(thread.getTopStackFrame());

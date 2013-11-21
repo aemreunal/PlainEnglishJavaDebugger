@@ -22,9 +22,6 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 public class DebugBreakpointListener implements IJavaBreakpointListener {
 	private final TranslatorViewModel model;
 	
-	private IJavaThread thread;
-	private IJavaBreakpoint breakpoint;
-	
 	private int numBreakpoints = 0;
 	
 	public DebugBreakpointListener(TranslatorViewModel model) {
@@ -64,14 +61,10 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	}
 	
 	private void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
-		this.thread = thread;
-		this.breakpoint = breakpoint;
-		model.setDebugInfo(thread, breakpoint);
+		model.setDebugInfo(thread);
 	}
 	
 	private void removeDebugInfo() {
-		thread = null;
-		breakpoint = null;
 		model.removeDebugInfo();
 	}
 	

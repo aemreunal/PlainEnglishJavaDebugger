@@ -2,7 +2,6 @@ package plainenglishjavadebugger;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /*
@@ -20,7 +19,7 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	
-	private Bundle debugBundle;
+	// private Bundle debugBundle;
 	
 	public Activator() {
 		System.out.println("Inside the Activator constructor.");
