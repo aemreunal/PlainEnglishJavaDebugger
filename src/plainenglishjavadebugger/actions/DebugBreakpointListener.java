@@ -27,14 +27,10 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	public DebugBreakpointListener(TranslatorViewModel model) {
 		this.model = model;
 		JDIDebugModel.addJavaBreakpointListener(this);
-		// DebugPlugin.getDefault().isDebugging();
-		// JDIDebugPlugin.getDefault().isDebugging();
-		// JDIDebugPlugin.getDefault().getBundle().get;
 	}
 	
 	@Override
 	public void addingBreakpoint(IJavaDebugTarget arg0, IJavaBreakpoint arg1) {
-		// System.out.println("Inside the addingBreakpoint method");
 		numBreakpoints++;
 		if (numBreakpoints == 1) {
 			System.out.println("The debugger has started!");
@@ -43,18 +39,15 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	
 	@Override
 	public int installingBreakpoint(IJavaDebugTarget arg0, IJavaBreakpoint arg1, IJavaType arg2) {
-		// System.out.println("Inside the installingBreakpoint method");
 		return 0;
 	}
 	
 	@Override
 	public void breakpointInstalled(IJavaDebugTarget arg0, IJavaBreakpoint arg1) {
-		// System.out.println("Inside the breakpointInstalled method");
 	}
 	
 	@Override
 	public int breakpointHit(IJavaThread thread, IJavaBreakpoint breakpoint) {
-		// This is the only point we can be sure that the debugger is running.
 		System.out.println("Just hit a breakpoint!");
 		setDebugInfo(thread, breakpoint);
 		return 0;
@@ -70,17 +63,14 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	
 	@Override
 	public void breakpointHasCompilationErrors(IJavaLineBreakpoint arg0, Message[] arg1) {
-		// System.out.println("Inside the breakpointHasCompilationErrors method");
 	}
 	
 	@Override
 	public void breakpointHasRuntimeException(IJavaLineBreakpoint arg0, DebugException arg1) {
-		// System.out.println("Inside the breakpointHasRuntimeException method");
 	}
 	
 	@Override
 	public void breakpointRemoved(IJavaDebugTarget arg0, IJavaBreakpoint arg1) {
-		// System.out.println("Inside the breakpointRemoved method");
 		numBreakpoints--;
 		if (numBreakpoints == 0) {
 			System.out.println("The debugger has stopped!");

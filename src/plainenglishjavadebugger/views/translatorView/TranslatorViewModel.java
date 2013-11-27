@@ -7,6 +7,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
+import plainenglishjavadebugger.actions.DebugEventListener;
 import plainenglishjavadebugger.translationModule.fileReader.JavaClassReader;
 
 /*
@@ -16,15 +17,11 @@ import plainenglishjavadebugger.translationModule.fileReader.JavaClassReader;
  * emre.unal@ozu.edu.tr
  */
 
-/*
- * Proper actions for debug events:
- * http://grepcode.com/file/repository.grepcode.com/java/eclipse.org/4.3/org.eclipse.debug/core/3.8.0/org/eclipse/debug/core/DebugEvent.java#DebugEvent
- */
-
 @SuppressWarnings("unused")
 public class TranslatorViewModel {
 	private final TranslatorView view;
-	private final DebugBreakpointListener listener;
+	private final DebugBreakpointListener breakpointListener;
+	private final DebugEventListener eventListener;
 	private final JavaClassReader sourceFileReader;
 	
 	private boolean isDebugging = false;
@@ -36,7 +33,8 @@ public class TranslatorViewModel {
 	
 	public TranslatorViewModel(TranslatorView view) {
 		this.view = view;
-		listener = new DebugBreakpointListener(this);
+		eventListener = new DebugEventListener(this);
+		breakpointListener = new DebugBreakpointListener(this);
 		sourceFileReader = new JavaClassReader();
 	}
 	
@@ -59,25 +57,23 @@ public class TranslatorViewModel {
 	
 	public void setDebugInfo(IJavaThread thread) {
 		this.thread = thread;
+		eventListener.startListening();
 		setDebugging(true);
 	}
 	
 	public void removeDebugInfo() {
 		thread = null;
+		eventListener.stopListening();
 		setDebugging(false);
 	}
 	
 	public void getThreadInfo() {
-		// System.out.println(JDIDebugPlugin.getDefault().isDebugging());
 		try {
+			
 			/*
-			 * System.out.println(thread.getDebugTarget().getName()); // Successfully got the name of the class with the main method attached to the
-			 * // class being debugged at breakpoint time.
-			 * System.out.println(breakpoint.getMarker().getResource()); // The proper path of the class being debugged
 			 * System.out.println(thread.findVariable("solutionNumber").isPrivate()); // Query the variables and get information about them
-			 * for (org.eclipse.debug.core.model.IStackFrame stackFrame : thread.getStackFrames()) {
-			 * System.out.println(stackFrame.getLineNumber()); // Successfully getting the line number of the stack frame!
-			 * }
+			 * System.out.println(thread.getTopStackFrame().getName()); // Get current method name
+			 * System.out.println(thread.getTopStackFrame().getDebugTarget().getName()); // Get current class name from src/...
 			 */
 			
 			/*
@@ -100,13 +96,6 @@ public class TranslatorViewModel {
 					System.out.println("Undebuggable, closed-source class.");
 				}
 			}
-			// System.out.println(thread.getTopStackFrame().getModelIdentifier());
-			// System.out.println(thread.getTopStackFrame().getName());
-			// System.out.println(thread.getTopStackFrame().getClass().getName());
-			// System.out.println(thread.getTopStackFrame().getClass().getSimpleName());
-			// System.out.println(thread.getTopStackFrame().getClass().getCanonicalName());
-			// System.out.println(thread.getTopStackFrame().getDebugTarget().getName());
-			// System.out.println(thread.getTopStackFrame().getLaunch().getDebugTarget().getName());
 		} catch (DebugException e) {
 			e.printStackTrace();
 		}
