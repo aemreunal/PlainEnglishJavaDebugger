@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.eclipse.debug.core.model.IStackFrame;
+
 /*
  * This code belongs to:
  * Ahmet Emre Unal
@@ -17,8 +19,8 @@ public class JavaClassReader {
 	private FileReader fileReader;
 	private BufferedReader bufferedReader;
 	
-	public String readLine(String filePath, int lineNumber) {
-		String processedFilePath = processFilePath(filePath);
+	public String readLine(IStackFrame stackFrame, String filePath, int lineNumber) {
+		String processedFilePath = processFilePath(stackFrame, filePath);
 		if (this.filePath != processedFilePath) {
 			this.filePath = processedFilePath;
 			openFileAndReader();
@@ -29,8 +31,11 @@ public class JavaClassReader {
 		}
 	}
 	
-	private String processFilePath(String filePath) {
-		return filePath.substring(2, filePath.length());
+	private String processFilePath(IStackFrame frame, String filePath) {
+		String command = (frame.getLaunch().getProcesses())[0].getAttribute(org.eclipse.debug.core.model.IProcess.ATTR_CMDLINE);
+		int workingDirBeginIndex = command.indexOf("-classpath ") + ("-classpath ".length());
+		int workingDirEndIndex = command.lastIndexOf('/', command.indexOf(':', workingDirBeginIndex));
+		return command.substring(workingDirBeginIndex, workingDirEndIndex) + filePath.substring(filePath.indexOf('/', 3));
 	}
 	
 	private void openFileAndReader() {
@@ -65,7 +70,7 @@ public class JavaClassReader {
 				e.printStackTrace();
 			}
 		}
-		return line;
+		return line.trim();
 	}
 	
 	private void closeFileAndReader() {

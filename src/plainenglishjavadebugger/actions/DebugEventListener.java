@@ -38,14 +38,17 @@ public class DebugEventListener implements IDebugEventSetListener {
 		}
 	}
 	
+	// IDebugEventSetListener interface methods begin
+	
 	@Override
 	public void handleDebugEvents(DebugEvent[] debugEvents) {
 		for (DebugEvent debugEvent : debugEvents) {
-			if (debugEvent.getDetail() == DebugEvent.STEP_OVER) {
-				System.out.println("Stepped over!");
+			int eventType = debugEvent.getDetail();
+			if ((eventType == DebugEvent.STEP_OVER) || (eventType == DebugEvent.STEP_INTO)) {
+				System.out.println("Stepped over or into!");
 			}
-			// System.out.println(debugEvent);
 		}
 	}
 	
+	// IDebugEventSetListener interface methods end
 }

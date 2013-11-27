@@ -87,11 +87,34 @@ public class TranslatorViewModel {
 				if (debuggedClassSourceElement != null /* Which means it's not a built-in, closed-source library class */) {
 					debuggedLineNumber = topStackFrame.getLineNumber();
 					debuggedClassPath = debuggedClassSourceElement.toString();
-					TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "", debuggedClassPath + " " + debuggedLineNumber);
-					// TranslatedLine translatedLine = new TranslatedLine(sourceFileReader.readLine(debuggedClassPath, debuggedLineNumber),
-					// debuggedClassPath + " " + debuggedLineNumber, debuggedClassPath + " " + debuggedLineNumber);
+					
+					// DUMMY TRANSLATED LINE
+					// TranslatedLine translatedLine = new TranslatedLine(debuggedClassPath + " " + debuggedLineNumber, debuggedLineNumber + "",
+					// debuggedClassPath + " " + debuggedLineNumber);
+					
+					// SOURCE LOOKUP TRANSLATED LINE
+					String executedSourceLine = sourceFileReader.readLine(topStackFrame, debuggedClassPath, debuggedLineNumber);
+					TranslatedLine translatedLine = new TranslatedLine(executedSourceLine, executedSourceLine, debuggedClassPath + " " + debuggedLineNumber);
+					
 					addElement(translatedLine);
 					printDebugInfo();
+					
+					/*
+					 * fileReader = new FileReader(filePath.substring(13, filePath.length()));
+					 * bufferedReader = new BufferedReader(fileReader);
+					 * 
+					 * getLine(1);
+					 */
+					/*
+					 * System.out.println(new java.io.File(".").getAbsolutePath());
+					 * System.out.println(filePath.substring(2, filePath.length()));
+					 * System.out.println((org.eclipse.jdt.core.IJavaProject.findType("GUIController")).getPath());
+					 */
+					/*
+					 * org.eclipse.core.resources.IProject prj = ResourcePlugin.getWorkspace().getRoot().getProject("project-name");
+					 * org.eclipse.core.resources.IFile theFile = prj.getFile(sourceFolder + packageName.replace('.','/') + className + ".java");
+					 */
+					
 				} else {
 					System.out.println("Undebuggable, closed-source class.");
 				}

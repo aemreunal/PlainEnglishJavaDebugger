@@ -29,6 +29,16 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 		JDIDebugModel.addJavaBreakpointListener(this);
 	}
 	
+	private void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
+		model.setDebugInfo(thread);
+	}
+	
+	private void removeDebugInfo() {
+		model.removeDebugInfo();
+	}
+	
+	// IJavaBreakpointListener interface methods begin
+	
 	@Override
 	public void addingBreakpoint(IJavaDebugTarget arg0, IJavaBreakpoint arg1) {
 		numBreakpoints++;
@@ -53,14 +63,6 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 		return 0;
 	}
 	
-	private void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
-		model.setDebugInfo(thread);
-	}
-	
-	private void removeDebugInfo() {
-		model.removeDebugInfo();
-	}
-	
 	@Override
 	public void breakpointHasCompilationErrors(IJavaLineBreakpoint arg0, Message[] arg1) {
 	}
@@ -78,4 +80,5 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 		}
 	}
 	
+	// IJavaBreakpointListener interface methods end
 }
