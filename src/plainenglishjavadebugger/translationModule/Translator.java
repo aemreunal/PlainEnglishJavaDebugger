@@ -57,7 +57,7 @@ public class Translator {
 			getCurrentFrameInfo();
 			if (sourceCodeIsAvailable()) {
 				getCurrentClassInfo();
-				model.addElement(getTranslation(debugEventType));
+				model.addTranslatedLine(getTranslation(debugEventType));
 			} else {
 				System.out.println("Undebuggable, closed-source class.");
 			}

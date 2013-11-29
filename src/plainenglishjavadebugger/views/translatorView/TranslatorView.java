@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -22,8 +21,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.BundleException;
 
 import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
-import plainenglishjavadebugger.views.translatorView.actions.StepIntoTranslateAction;
-import plainenglishjavadebugger.views.translatorView.actions.StepOverTranslateAction;
+import plainenglishjavadebugger.views.translatorView.actions.ClearTranslatorViewAction;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -122,8 +120,8 @@ public class TranslatorView extends ViewPart {
 	}
 	
 	private void makeActions() {
-		stepOverTranslateAction = new StepOverTranslateAction(this);
-		stepIntoTranslateAction = new StepIntoTranslateAction(this);
+		// stepOverTranslateAction = new StepOverTranslateAction(this);
+		stepIntoTranslateAction = new ClearTranslatorViewAction(this);
 		listDoubleClickAction = new ListDoubleClickAction(this);
 	}
 	
@@ -149,14 +147,14 @@ public class TranslatorView extends ViewPart {
 	
 	private void fillLocalPullDown(IMenuManager manager) {
 		// Adds actions to the view's drop down menu, the down-facing triangle to the top right.
-		manager.add(stepOverTranslateAction);
-		manager.add(new Separator());
+		// manager.add(stepOverTranslateAction);
+		// manager.add(new Separator());
 		manager.add(stepIntoTranslateAction);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		// Adds actions to the view's tool bar as small icons on the top right, to the left of the 'minimize' button.
-		manager.add(stepOverTranslateAction);
+		// manager.add(stepOverTranslateAction);
 		manager.add(stepIntoTranslateAction);
 	}
 	
@@ -197,9 +195,9 @@ public class TranslatorView extends ViewPart {
 		MessageDialog.openError(viewer.getControl().getShell(), title, message);
 	}
 	
-	public synchronized Action getStepOverTranslateAction() {
-		return stepOverTranslateAction;
-	}
+	// public synchronized Action getStepOverTranslateAction() {
+	// return stepOverTranslateAction;
+	// }
 	
 	public synchronized Action getStepIntoTranslateAction() {
 		return stepIntoTranslateAction;

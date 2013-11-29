@@ -35,7 +35,7 @@ public class TranslatorViewMenuManager extends MenuManager {
 	}
 	
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(view.getStepOverTranslateAction());
+		// manager.add(view.getStepOverTranslateAction());
 		manager.add(view.getStepIntoTranslateAction());
 		// Other plug-ins can contribute their actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));

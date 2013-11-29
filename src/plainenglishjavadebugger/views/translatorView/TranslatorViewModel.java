@@ -37,7 +37,7 @@ public class TranslatorViewModel {
 	private boolean isDebugging = false;
 	private IJavaThread thread;
 	
-	private ArrayList<TranslatedLine> elements = new ArrayList<TranslatedLine>();
+	private ArrayList<TranslatedLine> translatedLines = new ArrayList<TranslatedLine>();
 	
 	public TranslatorViewModel(TranslatorView view) {
 		this.view = view;
@@ -73,15 +73,20 @@ public class TranslatorViewModel {
 	}
 	
 	// TranslatorView actions
-	public void addElement(TranslatedLine translatedLine) {
-		elements.add(translatedLine);
+	public void addTranslatedLine(TranslatedLine translatedLine) {
+		translatedLines.add(translatedLine);
 		view.refresh();
 	}
 	
-	public void removeElement() {
-		if (elements.size() > 0) {
-			elements.remove(elements.size() - 1);
+	public void removeTranslatedLine() {
+		if (translatedLines.size() > 0) {
+			translatedLines.remove(translatedLines.size() - 1);
 		}
+		view.refresh();
+	}
+	
+	public void removeAllTranslatedLines() {
+		translatedLines.clear();
 		view.refresh();
 	}
 	
@@ -98,6 +103,6 @@ public class TranslatorViewModel {
 	}
 	
 	public ArrayList<TranslatedLine> getElements() {
-		return elements;
+		return translatedLines;
 	}
 }

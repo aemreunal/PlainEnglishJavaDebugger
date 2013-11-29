@@ -40,7 +40,6 @@ public class DebugEventListener implements IDebugEventSetListener {
 	}
 	
 	// IDebugEventSetListener interface methods begin
-	
 	@Override
 	public void handleDebugEvents(DebugEvent[] debugEvents) {
 		for (DebugEvent debugEvent : debugEvents) {
