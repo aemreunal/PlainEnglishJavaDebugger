@@ -1,6 +1,5 @@
 package plainenglishjavadebugger.views.translatorView.actions;
 
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -33,13 +32,13 @@ public class StepIntoTranslateAction extends Action {
 	@Override
 	public void run() {
 		if (model.isDebugging()) {
-			model.getThreadInfo();
-			try {
-				model.getThread().stepInto();
-			} catch (DebugException e) {
-				System.err.println("Unable to step into the line!");
-				e.printStackTrace();
-			}
+			// model.getThreadInfo();
+			// try {
+			// model.getThread().stepInto();
+			// } catch (DebugException e) {
+			// System.err.println("Unable to step into the line!");
+			// e.printStackTrace();
+			// }
 			// model.removeElement();
 			// view.showMessage("Info", "Removed the last translation line.");
 		}

@@ -30,11 +30,11 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	}
 	
 	private void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
-		model.setDebugInfo(thread);
+		model.initDebugState(thread);
 	}
 	
 	private void removeDebugInfo() {
-		model.removeDebugInfo();
+		model.stopDebugState();
 	}
 	
 	// IJavaBreakpointListener interface methods begin

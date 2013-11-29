@@ -8,26 +8,27 @@ import org.eclipse.ui.PlatformUI;
  * This code belongs to:
  * Ahmet Emre Unal
  * S001974
- * ---------------------------
  * emre.unal@ozu.edu.tr
- * barlas.karahocaoglu@ozu.edu.tr
- * celebi.murat@ozu.edu.tr
  */
 
 public class TranslatedLine {
 	private static int itemNumber = 0;
 	
-	private int translationStepNumber;
-	private String translatedCode;
-	private String shortDescription;
-	private String longDescription;
+	private final int translationStepNumber;
+	private final String translatedCode;
+	private final String shortDescription;
+	private final String longDescription;
+	private final String debugEventType;
+	private String popupMessage = "";
 	
-	public TranslatedLine(String translatedCode, String shortDescription, String longDescription) {
+	public TranslatedLine(String translatedCode, String shortDescription, String longDescription, String debugEventType) {
 		TranslatedLine.itemNumber++;
 		translationStepNumber = TranslatedLine.itemNumber;
 		this.translatedCode = translatedCode;
 		this.shortDescription = shortDescription;
 		this.longDescription = longDescription;
+		this.debugEventType = debugEventType;
+		createPopupMessage();
 	}
 	
 	public int getTranslationNumber() {
@@ -46,11 +47,19 @@ public class TranslatedLine {
 		return longDescription;
 	}
 	
+	public String getDebugEventType() {
+		return debugEventType;
+	}
+	
+	private void createPopupMessage() {
+		popupMessage += "Step #" + translationStepNumber + "\n\n";
+		popupMessage += "Debug event: " + debugEventType + "\n\n";
+		popupMessage += "The translated line of code:\n" + translatedCode + "\n\n";
+		popupMessage += getLongDescription();
+	}
+	
 	public String getPopupMessage() {
-		String message = "Step #" + translationStepNumber + "\n\n";
-		message += "The translated line of code:\n" + translatedCode + "\n\n";
-		message += getLongDescription();
-		return message;
+		return popupMessage;
 	}
 	
 	public Image getImage() {

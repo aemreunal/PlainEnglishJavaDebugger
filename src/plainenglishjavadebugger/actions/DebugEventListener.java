@@ -21,6 +21,7 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 public class DebugEventListener implements IDebugEventSetListener {
 	private final TranslatorViewModel model;
 	private boolean isListening = false;
+	private int debugEventType = -1;
 	
 	public DebugEventListener(TranslatorViewModel model) {
 		this.model = model;
@@ -43,12 +44,13 @@ public class DebugEventListener implements IDebugEventSetListener {
 	@Override
 	public void handleDebugEvents(DebugEvent[] debugEvents) {
 		for (DebugEvent debugEvent : debugEvents) {
-			int eventType = debugEvent.getDetail();
-			if ((eventType == DebugEvent.STEP_OVER) || (eventType == DebugEvent.STEP_INTO)) {
-				System.out.println("Stepped over or into!");
+			if ((debugEvent.getKind() == DebugEvent.SUSPEND) && (debugEvent.getDetail() == DebugEvent.STEP_END)) {
+				model.respondToDebugEvent(debugEventType);
+				debugEventType = -1;
+			} else if ((debugEvent.getDetail() == DebugEvent.STEP_OVER) || (debugEvent.getDetail() == DebugEvent.STEP_INTO)) {
+				debugEventType = debugEvent.getDetail();
 			}
 		}
 	}
-	
 	// IDebugEventSetListener interface methods end
 }

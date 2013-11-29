@@ -1,6 +1,5 @@
 package plainenglishjavadebugger.views.translatorView.actions;
 
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -34,13 +33,13 @@ public class StepOverTranslateAction extends Action {
 	@Override
 	public void run() {
 		if (model.isDebugging()) {
-			model.getThreadInfo();
-			try {
-				model.getThread().stepOver();
-			} catch (DebugException e) {
-				System.err.println("Unable to step over the line!");
-				e.printStackTrace();
-			}
+			// model.getThreadInfo();
+			// try {
+			// model.getThread().stepOver();
+			// } catch (DebugException e) {
+			// System.err.println("Unable to step over the line!");
+			// e.printStackTrace();
+			// }
 			// model.addElement(new TranslatedLine("System.out.println(\"Hello\")", "Hello", "Hellooooo"));
 			// view.showMessage("Info", "Added new translation line.");
 		}

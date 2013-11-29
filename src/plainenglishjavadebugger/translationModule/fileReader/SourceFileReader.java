@@ -13,7 +13,7 @@ import org.eclipse.debug.core.model.IStackFrame;
  * emre.unal@ozu.edu.tr
  */
 
-public class JavaClassReader {
+public class SourceFileReader {
 	private String filePath = "";
 	
 	private FileReader fileReader;
