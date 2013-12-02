@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Display;
 
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
 import plainenglishjavadebugger.actions.DebugEventListener;
+import plainenglishjavadebugger.translationModule.TranslatedLine;
 import plainenglishjavadebugger.translationModule.Translator;
 
 /*
@@ -57,37 +58,42 @@ public class TranslatorViewModel {
 		thread = null;
 		eventListener.stopListening();
 		translator.clearThread();
+		removeAllTranslatedLines();
 		setDebugging(false);
 	}
 	
 	public void respondToDebugEvent(final int debugEventType) {
 		if (isDebugging) {
-			// Required to run UI refresh as part of UI thread system.
-			Display.getDefault().syncExec(new Runnable() {
-				@Override
-				public void run() {
-					translator.translate(debugEventType);
-				}
-			});
+			translator.translate(debugEventType);
 		}
 	}
 	
 	// TranslatorView actions
 	public void addTranslatedLine(TranslatedLine translatedLine) {
 		translatedLines.add(translatedLine);
-		view.refresh();
+		refreshView();
 	}
 	
 	public void removeTranslatedLine() {
 		if (translatedLines.size() > 0) {
 			translatedLines.remove(translatedLines.size() - 1);
 		}
-		view.refresh();
+		refreshView();
 	}
 	
 	public void removeAllTranslatedLines() {
 		translatedLines.clear();
-		view.refresh();
+		refreshView();
+	}
+	
+	private void refreshView() {
+		// Required to run UI refresh as part of UI thread system.
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				view.refresh();
+			}
+		});
 	}
 	
 	public synchronized boolean isDebugging() {

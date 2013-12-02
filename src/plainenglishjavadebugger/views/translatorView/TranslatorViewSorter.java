@@ -3,6 +3,8 @@ package plainenglishjavadebugger.views.translatorView;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
+import plainenglishjavadebugger.translationModule.TranslatedLine;
+
 /*
  * This code belongs to:
  * Ahmet Emre Unal

@@ -4,6 +4,8 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import plainenglishjavadebugger.translationModule.TranslatedLine;
+
 /*
  * This code belongs to:
  * Ahmet Emre Unal

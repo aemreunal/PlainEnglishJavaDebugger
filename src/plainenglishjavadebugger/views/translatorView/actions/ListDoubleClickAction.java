@@ -4,7 +4,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
-import plainenglishjavadebugger.views.translatorView.TranslatedLine;
+import plainenglishjavadebugger.translationModule.TranslatedLine;
 import plainenglishjavadebugger.views.translatorView.TranslatorView;
 
 /*
