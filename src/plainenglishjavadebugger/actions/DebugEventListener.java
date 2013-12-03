@@ -22,34 +22,46 @@ public class DebugEventListener implements IDebugEventSetListener {
 	private final TranslatorViewModel model;
 	private boolean isListening = false;
 	private int debugEventType = -1;
-	
+
 	public DebugEventListener(TranslatorViewModel model) {
 		this.model = model;
 	}
-	
+
 	public void startListening() {
 		if (!isListening) {
 			DebugPlugin.getDefault().addDebugEventListener(this);
+			System.out.println("Started Listening");
 		}
 	}
-	
+
 	public void stopListening() {
 		if (isListening) {
 			DebugPlugin.getDefault().removeDebugEventListener(this);
+			System.out.println("Started Listening");
 		}
 	}
-	
+
 	// IDebugEventSetListener interface methods begin
 	@Override
 	public void handleDebugEvents(DebugEvent[] debugEvents) {
-		for (DebugEvent debugEvent : debugEvents) {
-			if ((debugEvent.getKind() == DebugEvent.SUSPEND) && (debugEvent.getDetail() == DebugEvent.STEP_END)) {
-				model.respondToDebugEvent(debugEventType);
-				debugEventType = -1;
-			} else if ((debugEvent.getDetail() == DebugEvent.STEP_OVER) || (debugEvent.getDetail() == DebugEvent.STEP_INTO)) {
-				debugEventType = debugEvent.getDetail();
-			}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			System.out.println("Cannot sleep");
+			e.printStackTrace();
 		}
+		model.stepOver();
+		/*
+		 * for (DebugEvent debugEvent : debugEvents) { if ((debugEvent.getKind()
+		 * == DebugEvent.SUSPEND) && (debugEvent.getDetail() ==
+		 * DebugEvent.STEP_END)) { model.respondToDebugEvent(debugEventType);
+		 * debugEventType = -1; } else if ((debugEvent.getDetail() ==
+		 * DebugEvent.STEP_OVER) || (debugEvent.getDetail() ==
+		 * DebugEvent.STEP_INTO)) { debugEventType = debugEvent.getDetail(); } }
+		 */
 	}
 	// IDebugEventSetListener interface methods end
+	public void setIsListening(boolean isListening) {
+		this.isListening= isListening; 
+	}
 }

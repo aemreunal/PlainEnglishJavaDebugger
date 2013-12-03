@@ -30,6 +30,12 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	}
 	
 	private void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
+		try {
+			System.out.println(thread.getTopStackFrame().getName());
+		} catch (DebugException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		model.initDebugState(thread);
 	}
 	
