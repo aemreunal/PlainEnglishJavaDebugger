@@ -94,7 +94,17 @@ public class TranslatorViewModel {
 	}
 	
 	public void stackyThingy() throws DebugException {
-		System.out.println(thread.getTopStackFrame().getName());
+		//System.out.println(thread.getTopStackFrame().getName());
+		view.addStackNames(getCurrentStackNames());
+	}
+	
+	private String[] getCurrentStackNames() throws DebugException {
+		IStackFrame[] stackFrames = thread.getStackFrames();
+		String[] stackNames =  new String[stackFrames.length];
+		for (int i = 0; i < stackFrames.length; i++) {
+			stackNames[i] = stackFrames[i].getName();
+		}
+		return stackNames;
 	}
 
 	// TranslatorView actions

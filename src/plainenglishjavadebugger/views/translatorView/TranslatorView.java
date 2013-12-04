@@ -1,6 +1,7 @@
 package plainenglishjavadebugger.views.translatorView;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -22,6 +23,7 @@ import org.osgi.framework.BundleException;
 
 import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
 import plainenglishjavadebugger.views.translatorView.actions.ClearTranslatorViewAction;
+import plainenglishjavadebugger.views.translatorView.actions.OpenSimulationFrameAction;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -48,6 +50,8 @@ public class TranslatorView extends ViewPart {
 	private Action stepOverTranslateAction;
 	private Action stepIntoTranslateAction;
 	private Action listDoubleClickAction;
+	private Action openSimultaionFrameAction;
+	private TranslatorViewStackFrame simulationFrame;
 	
 	private String[] tableColNames = { "Step #", "Short Translation" };
 	
@@ -70,6 +74,7 @@ public class TranslatorView extends ViewPart {
 		initTableViewer(parent);
 		
 		setHelpSystem();
+		initSimulationFrame();
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
@@ -123,6 +128,7 @@ public class TranslatorView extends ViewPart {
 		// stepOverTranslateAction = new StepOverTranslateAction(this);
 		stepIntoTranslateAction = new ClearTranslatorViewAction(this);
 		listDoubleClickAction = new ListDoubleClickAction(this);
+		openSimultaionFrameAction = new OpenSimulationFrameAction(this);
 	}
 	
 	private void hookContextMenu() {
@@ -150,12 +156,22 @@ public class TranslatorView extends ViewPart {
 		// manager.add(stepOverTranslateAction);
 		// manager.add(new Separator());
 		manager.add(stepIntoTranslateAction);
+		manager.add(openSimultaionFrameAction);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		// Adds actions to the view's tool bar as small icons on the top right, to the left of the 'minimize' button.
 		// manager.add(stepOverTranslateAction);
 		manager.add(stepIntoTranslateAction);
+		manager.add(openSimultaionFrameAction);
+	}
+	
+	private void initSimulationFrame() {
+		simulationFrame = new TranslatorViewStackFrame(model);
+	}
+	
+	public void addStackNames(String[] stackNames) {
+		simulationFrame.addStackNames(stackNames);
 	}
 	
 	@Override
@@ -205,6 +221,10 @@ public class TranslatorView extends ViewPart {
 	
 	public synchronized Action getListDoubleClickAction() {
 		return listDoubleClickAction;
+	}
+	
+	public synchronized TranslatorViewStackFrame getSimulationFrame() {
+		return simulationFrame;
 	}
 	
 }
