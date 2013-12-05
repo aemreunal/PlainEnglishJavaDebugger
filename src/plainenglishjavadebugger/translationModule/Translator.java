@@ -1,11 +1,11 @@
 package plainenglishjavadebugger.translationModule;
 
-import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.translationModule.fileReader.SourceFileReader;
+import plainenglishjavadebugger.translationModule.statementProcessors.StatementProcessor;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 /*
@@ -31,6 +31,7 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 public class Translator {
 	private final TranslatorViewModel model;
 	private final SourceFileReader sourceFileReader;
+	private final StatementProcessor statementProcessor;
 	
 	private IJavaThread thread;
 	
@@ -55,9 +56,12 @@ public class Translator {
 	private final String returnTypeRegex = javaNameRegex;
 	private final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[ ]" + returnTypeRegex + "[ ]" + javaNameRegex + "[ ]?" + argumentRegex + "[ ]?['{']";
 	
+	private final String returnStatementInfoLink = "http://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html";
+	
 	public Translator(TranslatorViewModel model) {
 		this.model = model;
 		sourceFileReader = new SourceFileReader();
+		statementProcessor = new StatementProcessor();
 		resetTranslator();
 	}
 	
@@ -116,50 +120,7 @@ public class Translator {
 	}
 	
 	private void setTranslationInfo() {
-		identifyStatementType();
-	}
-	
-	private void identifyStatementType() {
-		if (executedSourceLine.startsWith("if")) {
-			translatedLine.setStatementType(StatementType.IF);
-			translatedLine.setShortDescription("This is an if-statement.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} else if (executedSourceLine.startsWith("for")) {
-			translatedLine.setStatementType(StatementType.FOR_LOOP);
-			translatedLine.setShortDescription("This is a for-loop.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} else if (executedSourceLine.startsWith("while")) {
-			translatedLine.setStatementType(StatementType.WHILE_LOOP);
-			translatedLine.setShortDescription("This is a while-loop.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} else if (executedSourceLine.startsWith("switch")) {
-			translatedLine.setStatementType(StatementType.SWITCH);
-			translatedLine.setShortDescription("This is a switch-statement.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} else if (executedSourceLine.startsWith("return")) {
-			translatedLine.setStatementType(StatementType.RETURN);
-			translatedLine.setShortDescription("This is a return-statement.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} else if (executedSourceLine.matches(instantiationStatementRegex)) {
-			translatedLine.setStatementType(StatementType.INSTANTIATION);
-			translatedLine.setShortDescription("This is an instantiation.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} else if (executedSourceLine.matches(methodCallStatementRegex)) {
-			translatedLine.setStatementType(StatementType.METHOD_CALL);
-			translatedLine.setShortDescription("This is a method call.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		} /*
-		 * else if (executedSourceLine.matches(methodEnterStatementRegex)) {
-		 * // Can this ever be reached? Does the debugger highlight method entrances?
-		 * translatedLine.setStatementType(StatementType.METHOD_ENTER);
-		 * translatedLine.setShortDescription("This is a method entrance.");
-		 * translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		 * }
-		 */else {
-			translatedLine.setStatementType(StatementType.OTHER);
-			translatedLine.setShortDescription("This is something else.");
-			translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-		}
+		statementProcessor.processStatement(thread, translatedLine, executedSourceLine);
 	}
 	
 	private void returnLine() {
@@ -183,16 +144,5 @@ public class Translator {
 			}
 		}
 		return false;
-	}
-	
-	private String getDebugEventTypeName(int debugEventType) {
-		switch (debugEventType) {
-		case DebugEvent.STEP_OVER:
-			return "Stepped over the line";
-		case DebugEvent.STEP_INTO:
-			return "Stepped into the line";
-		default:
-			return "Undetermined debug event.";
-		}
 	}
 }

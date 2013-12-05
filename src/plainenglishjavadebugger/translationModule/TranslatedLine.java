@@ -16,9 +16,9 @@ public class TranslatedLine {
 	private static int itemNumber = 0;
 	
 	private final int translationStepNumber;
-	private String translatedCode;
-	private String shortDescription;
-	private String longDescription;
+	private String translatedCode = "";
+	private String shortDescription = "";
+	private String longDescription = "";
 	private String debugEventType;
 	private String popupMessage = "";
 	
@@ -52,7 +52,7 @@ public class TranslatedLine {
 		popupMessage = "";
 		popupMessage += "Step #" + translationStepNumber + "\n\n";
 		popupMessage += "Debug event: " + debugEventType + "\n\n";
-		popupMessage += "The translated line of code:\n\t" + translatedCode + "\n\n";
+		popupMessage += "The translated line of code:\n\n\t" + translatedCode + "\n\n";
 		popupMessage += getLongDescription();
 	}
 	
@@ -100,6 +100,10 @@ public class TranslatedLine {
 	 */
 	public synchronized void setLongDescription(String longDescription) {
 		this.longDescription = longDescription;
+	}
+	
+	public synchronized void appendToLongDescription(String longDescription) {
+		this.longDescription += (" " + longDescription);
 	}
 	
 	/**

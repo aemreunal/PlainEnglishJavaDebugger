@@ -34,14 +34,14 @@ public class TranslatorViewModel {
 	private final DebugBreakpointListener breakpointListener;
 	private final DebugEventListener eventListener;
 	private final Translator translator;
+	private final ArrayList<TranslatedLine> translatedLines;
 	
 	private boolean isDebugging = false;
 	private IJavaThread thread;
 	
-	private ArrayList<TranslatedLine> translatedLines = new ArrayList<TranslatedLine>();
-	
 	public TranslatorViewModel(TranslatorView view) {
 		this.view = view;
+		translatedLines = new ArrayList<TranslatedLine>();
 		eventListener = new DebugEventListener(this);
 		breakpointListener = new DebugBreakpointListener(this);
 		translator = new Translator(this);
