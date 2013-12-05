@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,11 +21,13 @@ public class TranslatorViewStackFrame extends JFrame {
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = getContentPane();
+		
+		contentPane.setLayout(new FlowLayout());
 
 		contentPane.add(new JLabel("This is the Simulation Window"),
 				BorderLayout.NORTH);
-		
-		setSize(new Dimension(500, 500));
+		setMinimumSize(new Dimension(300, 300));
+		pack();
 	}
 	
 	public void setVisibility(boolean visible) {
@@ -38,8 +41,8 @@ public class TranslatorViewStackFrame extends JFrame {
 			System.out.println(stackName);
 			contentPane.add(new JLabel(stackName));
 		}
-		
 		repaint();
+		pack();
 	}
 	
 	private void removeComponentsFromContentPane() {
