@@ -5,7 +5,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.translationModule.fileReader.SourceFileReader;
-import plainenglishjavadebugger.translationModule.statementProcessors.StatementProcessor;
+import plainenglishjavadebugger.translationModule.statementProcessors.SourceCodeProcessor;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 /*
@@ -31,7 +31,7 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 public class Translator {
 	private final TranslatorViewModel model;
 	private final SourceFileReader sourceFileReader;
-	private final StatementProcessor statementProcessor;
+	private final SourceCodeProcessor sourceCodeProcessor;
 	
 	private IJavaThread thread;
 	
@@ -44,24 +44,11 @@ public class Translator {
 	private String executedSourceLine;
 	
 	private String[] ignoredLines = { "}", "});" };
-	// Java regex info: http://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
-	private final String javaNameRegex = "[a-zA-Z]*[a-zA-Z_0-9]*";
-	private final String argumentRegex = "['('].*[')']";
-	private final String messageSendRegex = javaNameRegex + "['.']";
-	private final String assignmentRegex = "(" + messageSendRegex + ")?" + javaNameRegex + "[ ]=[ ]";
-	private final String assignmentPossibilityRegex = "(" + assignmentRegex + ")?";
-	private final String methodCallStatementRegex = assignmentPossibilityRegex + "(" + messageSendRegex + ")*" + javaNameRegex + "[ ]?" + argumentRegex + "[';']";
-	private final String instantiationStatementRegex = assignmentPossibilityRegex + "new[ ]" + javaNameRegex + "[ ]?" + argumentRegex + "[';']";
-	private final String visibilityDeclarationRegex = "\bprivate\b|\bpublic\b|\bprotected\b";
-	private final String returnTypeRegex = javaNameRegex;
-	private final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[ ]" + returnTypeRegex + "[ ]" + javaNameRegex + "[ ]?" + argumentRegex + "[ ]?['{']";
-	
-	private final String returnStatementInfoLink = "http://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html";
 	
 	public Translator(TranslatorViewModel model) {
 		this.model = model;
 		sourceFileReader = new SourceFileReader();
-		statementProcessor = new StatementProcessor();
+		sourceCodeProcessor = new SourceCodeProcessor();
 		resetTranslator();
 	}
 	
@@ -120,7 +107,7 @@ public class Translator {
 	}
 	
 	private void setTranslationInfo() {
-		statementProcessor.processStatement(thread, translatedLine, executedSourceLine);
+		sourceCodeProcessor.processStatement(thread, translatedLine, executedSourceLine);
 	}
 	
 	private void returnLine() {

@@ -106,6 +106,10 @@ public class TranslatedLine {
 		this.longDescription += (" " + longDescription);
 	}
 	
+	public synchronized void appendLinkToLongDescription(String statementType, String link) {
+		longDescription += "\n\nFor more information on " + statementType + ", please visit:\n" + link;
+	}
+	
 	/**
 	 * @return the statementType
 	 */

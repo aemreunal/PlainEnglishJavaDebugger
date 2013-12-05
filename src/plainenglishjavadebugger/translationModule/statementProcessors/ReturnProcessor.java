@@ -14,24 +14,16 @@ import plainenglishjavadebugger.translationModule.TranslatedLine;
  * emre.unal@ozu.edu.tr
  */
 
-public class ReturnStatementProcessor extends StatementProcessor {
-	private final String returnStatementInfoLink = "http://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html";
+public class ReturnProcessor extends StatementProcessor {
+	private final String infoLink = "http://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html";
 	
-	private IJavaThread thread;
-	private TranslatedLine translatedLine;
-	private String executedSourceLine;
-	
-	public ReturnStatementProcessor(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
-		this.thread = thread;
-		this.translatedLine = translatedLine;
-		this.executedSourceLine = executedSourceLine;
-		process();
+	public ReturnProcessor(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
+		super(StatementType.RETURN, thread, translatedLine, executedSourceLine);
 	}
 	
-	private void process() {
-		translatedLine.setStatementType(StatementType.RETURN);
+	@Override
+	protected void process() {
 		translatedLine.setLongDescription("This statement is a return statement.");
-		
 		int returnValueStartIndex = executedSourceLine.indexOf(' ');
 		if (returnValueStartIndex != -1) {
 			// There is a return value.
@@ -40,7 +32,7 @@ public class ReturnStatementProcessor extends StatementProcessor {
 			// Just an empty return statement.
 			processReturnWithoutValue();
 		}
-		translatedLine.appendToLongDescription("For more information on return values, please visit:\n" + returnStatementInfoLink);
+		translatedLine.appendLinkToLongDescription("return values", infoLink);
 	}
 	
 	private void processReturnWithoutValue() {
@@ -53,7 +45,7 @@ public class ReturnStatementProcessor extends StatementProcessor {
 		String returned = executedSourceLine.substring(returnValueStartIndex + 1, (executedSourceLine.length() - 1));
 		translatedLine.setShortDescription("You are returning \"" + returned + "\".");
 		translatedLine.appendToLongDescription("This statement returns a value to the calling method, specifically \"" + returned + "\".");
-		if (returned.matches(javaNameRegex)) {
+		if (returned.matches(SourceCodeProcessor.javaNameRegex)) {
 			getReturnValue(returned);
 		}
 	}
