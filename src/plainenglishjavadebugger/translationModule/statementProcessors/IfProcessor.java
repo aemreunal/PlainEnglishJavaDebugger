@@ -1,7 +1,5 @@
 package plainenglishjavadebugger.translationModule.statementProcessors;
 
-import org.eclipse.jdt.debug.core.IJavaThread;
-
 import plainenglishjavadebugger.translationModule.StatementType;
 import plainenglishjavadebugger.translationModule.TranslatedLine;
 
@@ -15,13 +13,14 @@ import plainenglishjavadebugger.translationModule.TranslatedLine;
 public class IfProcessor extends StatementProcessor {
 	private final String infoLink = "http://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html";
 	
-	public IfProcessor(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
-		super(StatementType.IF, thread, translatedLine, executedSourceLine);
+	public IfProcessor(TranslatedLine translatedLine, String executedSourceLine) {
+		super(StatementType.IF, executedSourceLine, translatedLine);
+		process();
 	}
 	
 	@Override
 	protected void process() {
-		translatedLine.setShortDescription("You are checking a condition.");
+		translatedLine.setShortDescription("You are now checking a condition.");
 		translatedLine.setLongDescription("This statement is an if-statement.");
 		// +1 to remove the opening parenthesis.
 		String condition = executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')'));

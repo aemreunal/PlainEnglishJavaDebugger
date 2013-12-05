@@ -50,9 +50,9 @@ public class TranslatedLine {
 	
 	private void createPopupMessage() {
 		popupMessage = "";
-		popupMessage += "Step #" + translationStepNumber + "\n\n";
-		popupMessage += "Debug event: " + debugEventType + "\n\n";
-		popupMessage += "The translated line of code:\n\n\t" + translatedCode + "\n\n";
+		popupMessage += "- Step #" + translationStepNumber + "\n\n";
+		popupMessage += "- Debug event: " + debugEventType + "\n\n";
+		popupMessage += "- The translated line of code:\n\t" + translatedCode + "\n\n";
 		popupMessage += getLongDescription();
 	}
 	

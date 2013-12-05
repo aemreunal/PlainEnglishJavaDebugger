@@ -19,6 +19,7 @@ public class ReturnProcessor extends StatementProcessor {
 	
 	public ReturnProcessor(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
 		super(StatementType.RETURN, thread, translatedLine, executedSourceLine);
+		process();
 	}
 	
 	@Override
