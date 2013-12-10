@@ -1,0 +1,35 @@
+Plain English Java Debugger for Educational Purposes
+
+Abstract:
+With the advance of computer technology world's interest trend bends over software engineering. Day by day universities try to advance their software engineering education system to catch that trend. This paper focusses on the need of an aid for the beginner Java courses by helping students to understand the backgroung operations in a simple text and visual based way.
+
+Introduction:
+There exist many languages and development environments. The fundamentals of software development are mostly independent of those written above. Like a good hunter doesn't need a specific gun to hunt an animal. What ever you give to a good hunter he will gets used to is in few shots. But to be able to hunt, he needs to know that nature and anatomy of the animals, the affects of the weather conditions, sound that he needs to pay attention etc. The gun is only a tool, its the same in software developing. Languages are just the tools that we use to reach our goal. In the end, bullet goes in to the animal and those lines transformed into ones and zeros.(Bu son cümleden emin değilim). In order to be a good developer one must understand the background operations, what is happening in the runtime, which state the program fails, what are the variables. Like an iPad which shows youo the real time tracjectory of the bullet when you press the trigger of the gun, and if the animal is not dead an infrared camera which shows you wheater you shot the heart or just flesh.
+In software development we have debuggers, which shows us the runtime variables, states etc. They are very efficient tools if you know how to use them. This is the tricky part, knowing how to use a debugger. It is not an easy task to use a debugger especially when you are a freshmen CS student. Thus this problem creates our topic. In this paper we will focus on how to simplyfie the use of debuggers in order to assist beginner students to understand the fundamentals of software development and solve the problems in their codes.
+
+We will focus on Java language, Eclipse integrated development environment, and Eclipse's debugger.
+
+The rest of the paper has the following organization. 
+*Java language, Eclipse IDE and Debugging Concept are introduced;   !!!!!!!!!!!!
+*Background, investigated domain, challenges and utilized techniques described;
+*Problem statement stated;
+*Solution approach given;
+
+****TBC---
+
+
+
+Background:
+
+***********
+
+Problem Statement:
+We want programming students to better understand the way programs work in the backgroung so they can write codes easily by knowing how they works and we want them to better identify the faults, failures and errors by providing a more understandable debugger information.
+
+There is a debugger perspective provided by Eclipse IDE for java but it is not easy to understand. When debugger is not efficiently used, students suffer from malfunctioning codes and seek help from eachother, TAs and Professors, but this is inefficint in terms of academic resources and in the way of learning also resulting in plagarism.
+
+We will develop a plug-in for Eclipse IDE's Debugger perspective where students can easily monitor the states, variables and stacks in both textual and visual way. They will be encouraged to fix the problems by them selves thus support their learning process and reducing the academic weight on TAs and professors.
+
+
+
+
