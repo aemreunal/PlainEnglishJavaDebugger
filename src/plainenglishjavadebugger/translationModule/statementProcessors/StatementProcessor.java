@@ -32,6 +32,9 @@ public abstract class StatementProcessor {
 		int paranthesesLevel = 0;
 		for (int i = startIndex; i < executedSourceLine.length(); i++) {
 			char currentChar = executedSourceLine.charAt(i);
+			if (charToIndex == ')' && currentChar == charToIndex && paranthesesLevel == 1) {
+				return i;
+			}
 			if (currentChar == charToIndex && paranthesesLevel == 0) {
 				return i;
 			}
@@ -42,6 +45,17 @@ public abstract class StatementProcessor {
 			}
 		}
 		return -1;
+	}
+	
+	protected String removeParantheses(String code) {
+		while (code.charAt(0) == '(' && code.charAt(code.length() - 1) == ')') {
+			code = code.substring(1, code.length() - 1);
+		}
+		return code;
+	}
+	
+	protected boolean isJavaName(String condition) {
+		return condition.matches(SourceCodeProcessor.javaNameRegex);
 	}
 	
 	protected void getVariableValue(String variable) {

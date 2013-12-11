@@ -75,9 +75,9 @@ public class ForProcessor extends StatementProcessor {
 		secondParamIndex = getIndexForChar(firstParamIndex + 1, ';');
 		thirdParamIndex = getIndexForChar(secondParamIndex + 1, ')');
 		
-		firstParam = executedSourceLine.substring(paramStartIndex + 1, firstParamIndex).trim();
-		secondParam = executedSourceLine.substring(firstParamIndex + 1, secondParamIndex).trim();
-		thirdParam = executedSourceLine.substring(secondParamIndex + 1, thirdParamIndex).trim();
+		firstParam = removeParantheses(executedSourceLine.substring(paramStartIndex + 1, firstParamIndex).trim());
+		secondParam = removeParantheses(executedSourceLine.substring(firstParamIndex + 1, secondParamIndex).trim());
+		thirdParam = removeParantheses(executedSourceLine.substring(secondParamIndex + 1, thirdParamIndex).trim());
 		
 		firstParamExists = !(paramStartIndex + 1 == firstParamIndex || firstParam.matches(SourceCodeProcessor.whiteSpaceRegex));
 		secondParamExists = !(firstParamIndex + 1 == secondParamIndex || secondParam.matches(SourceCodeProcessor.whiteSpaceRegex));

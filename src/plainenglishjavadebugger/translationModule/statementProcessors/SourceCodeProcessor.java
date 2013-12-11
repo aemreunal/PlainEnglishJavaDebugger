@@ -14,20 +14,20 @@ import plainenglishjavadebugger.translationModule.TranslatedLine;
 public class SourceCodeProcessor {
 	// Java regex info: http://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
 	public static final String whiteSpaceRegex = "\\s*";
-	public static final String javaNameRegex = "[a-zA-Z]*[a-zA-Z_0-9]*";
+	public static final String numberRegex = "[0-9]*(['.'][0-9]*)?";
+	public static final String stringRegex = "['\"'].*['\"']";
+	public static final String javaNameRegex = "[a-zA-Z][a-zA-Z_0-9]*";
 	public static final String argumentRegex = "['('].*[')']";
 	public static final String messageSendRegex = javaNameRegex + "['.']";
-	public static final String assignmentRegex = "(" + messageSendRegex + ")?" + javaNameRegex + "[ ]=[ ]";
+	public static final String assignmentRegex = "(" + javaNameRegex + "(['.']|[' ']))*" + javaNameRegex + "[' ']*['='][' ']*";
 	public static final String assignmentPossibilityRegex = "(" + assignmentRegex + ")?";
-	public static final String methodCallStatementRegex = assignmentPossibilityRegex + "(" + messageSendRegex + ")*" + javaNameRegex + "[ ]?" + argumentRegex + "[';']";
-	public static final String instantiationStatementRegex = assignmentPossibilityRegex + "new[ ]" + javaNameRegex + "[ ]?" + argumentRegex + "[';']";
+	public static final String methodCallStatementRegex = assignmentPossibilityRegex + "(" + messageSendRegex + ")*" + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
+	public static final String instantiationStatementRegex = assignmentPossibilityRegex + "new " + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
 	public static final String visibilityDeclarationRegex = "\bprivate\b|\bpublic\b|\bprotected\b";
 	public static final String returnTypeRegex = javaNameRegex;
-	public static final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[ ]" + returnTypeRegex + "[ ]" + javaNameRegex + "[ ]?" + argumentRegex + "[ ]?['{']";
+	public static final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[' ']" + returnTypeRegex + "[' ']" + javaNameRegex + "[' ']?" + argumentRegex + "[' ']?['{']";
 	
 	public void processStatement(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
-		// String code = "return (mustafa);";
-		// new ReturnProcessor(thread, translatedLine, code);
 		if (executedSourceLine.startsWith("if")) {
 			new IfProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.startsWith("for")) {
@@ -41,7 +41,7 @@ public class SourceCodeProcessor {
 		} else if (executedSourceLine.matches(instantiationStatementRegex)) {
 			
 		} else if (executedSourceLine.matches(methodCallStatementRegex)) {
-			
+			new MethodCallProcessor(thread, translatedLine, executedSourceLine);
 			/*
 			 * }
 			 * else if (executedSourceLine.matches(methodEnterStatementRegex)) {

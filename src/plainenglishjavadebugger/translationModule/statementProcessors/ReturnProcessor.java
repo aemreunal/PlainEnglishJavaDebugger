@@ -41,10 +41,10 @@ public class ReturnProcessor extends StatementProcessor {
 	
 	private void processReturnWithValue(int returnValueStartIndex) {
 		// +1 to throw out the space at the beginning, -1 to throw out the semi-colon.
-		String returned = executedSourceLine.substring(returnValueStartIndex + 1, (executedSourceLine.length() - 1));
+		String returned = removeParantheses(executedSourceLine.substring(returnValueStartIndex + 1, (executedSourceLine.length() - 1)));
 		translatedLine.setShortDescription("You are returning \"" + returned + "\".");
 		translatedLine.appendToLongDescription("This statement returns a value to the calling method, specifically \"" + returned + "\",");
-		if (returned.matches(SourceCodeProcessor.javaNameRegex)) {
+		if (isJavaName(returned)) {
 			getVariableValue(returned);
 		}
 	}

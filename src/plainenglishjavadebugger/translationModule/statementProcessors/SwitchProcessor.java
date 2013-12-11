@@ -22,12 +22,12 @@ public class SwitchProcessor extends StatementProcessor {
 	
 	@Override
 	protected void process() {
-		String valueToMatch = executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')'));
+		String valueToMatch = removeParantheses(executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')')));
 		translatedLine.setShortDescription("You are now matching the value of \"" + valueToMatch + "\" with cases below.");
-		translatedLine.setLongDescription("This statement is an switch-statement.");
+		translatedLine.setLongDescription("This statement is a switch-statement.");
 		// +1 to remove the opening parenthesis.
 		translatedLine.appendToLongDescription("This statement matches a value, in this case \"" + valueToMatch + "\",");
-		if (valueToMatch.matches(SourceCodeProcessor.javaNameRegex)) {
+		if (isJavaName(valueToMatch)) {
 			getVariableValue(valueToMatch);
 		}
 		translatedLine.appendToLongDescription("with cases below, to decide what part of the code to run.");

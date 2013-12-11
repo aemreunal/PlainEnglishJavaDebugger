@@ -23,12 +23,12 @@ public class WhileProcessor extends StatementProcessor {
 	@Override
 	protected void process() {
 		// +1 to remove the opening parenthesis.
-		String condition = executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')'));
+		String condition = removeParantheses(executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')')));
 		translatedLine.setShortDescription("You are now entering a while loop of structure \"while(" + condition + ")\".");
 		translatedLine.setLongDescription("This statement is a while loop statement.");
 		translatedLine.appendToLongDescription("\n\nWhile-loops allow you to repeat the execution of a block of code for a certain amount -");
 		translatedLine.appendToLongDescription("more specifically, until the condition, in this case \"" + condition + "\",");
-		if (condition.matches(SourceCodeProcessor.javaNameRegex)) {
+		if (isJavaName(condition)) {
 			getVariableValue(condition);
 		}
 		translatedLine.appendToLongDescription("becomes false.");
