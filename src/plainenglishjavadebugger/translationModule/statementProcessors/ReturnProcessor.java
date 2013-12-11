@@ -1,7 +1,5 @@
 package plainenglishjavadebugger.translationModule.statementProcessors;
 
-import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.IValue;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.translationModule.StatementType;
@@ -45,19 +43,9 @@ public class ReturnProcessor extends StatementProcessor {
 		// +1 to throw out the space at the beginning, -1 to throw out the semi-colon.
 		String returned = executedSourceLine.substring(returnValueStartIndex + 1, (executedSourceLine.length() - 1));
 		translatedLine.setShortDescription("You are returning \"" + returned + "\".");
-		translatedLine.appendToLongDescription("This statement returns a value to the calling method, specifically \"" + returned + "\".");
+		translatedLine.appendToLongDescription("This statement returns a value to the calling method, specifically \"" + returned + "\",");
 		if (returned.matches(SourceCodeProcessor.javaNameRegex)) {
-			getReturnValue(returned);
-		}
-	}
-	
-	private void getReturnValue(String returned) {
-		try {
-			IValue returnValue = thread.findVariable(returned).getValue();
-			translatedLine.appendToLongDescription("The returned variable has the value of \"" + returnValue.getValueString() + "\".");
-		} catch (DebugException e) {
-			// Don't append the value of the returned variable.
-			System.err.println("Unable to get the value of the returned variable!");
+			getVariableValue(returned);
 		}
 	}
 }

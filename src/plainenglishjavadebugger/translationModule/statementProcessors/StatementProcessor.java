@@ -1,5 +1,7 @@
 package plainenglishjavadebugger.translationModule.statementProcessors;
 
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IValue;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.translationModule.StatementType;
@@ -17,14 +19,10 @@ public abstract class StatementProcessor {
 	protected TranslatedLine translatedLine;
 	protected String executedSourceLine;
 	
-	public StatementProcessor(StatementType type, String executedSourceLine, TranslatedLine translatedLine) {
+	public StatementProcessor(StatementType type, IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
 		this.translatedLine = translatedLine;
 		this.executedSourceLine = executedSourceLine;
 		this.translatedLine.setStatementType(type);
-	}
-	
-	public StatementProcessor(StatementType type, IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
-		this(type, executedSourceLine, translatedLine);
 		this.thread = thread;
 	}
 	
@@ -44,5 +42,18 @@ public abstract class StatementProcessor {
 			}
 		}
 		return -1;
+	}
+	
+	protected void getVariableValue(String variable) {
+		try {
+			IValue variableValue = thread.findVariable(variable).getValue();
+			translatedLine.appendToLongDescription("which has the value of \"" + variableValue.getValueString() + "\",");
+		} catch (NullPointerException e) {
+			// Don't append the value of the returned variable.
+			System.err.println("Unable to get the variable itself!");
+		} catch (DebugException e) {
+			// Don't append the value of the returned variable.
+			System.err.println("Unable to get the value of the variable!");
+		}
 	}
 }

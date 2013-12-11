@@ -26,16 +26,16 @@ public class SourceCodeProcessor {
 	public static final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[ ]" + returnTypeRegex + "[ ]" + javaNameRegex + "[ ]?" + argumentRegex + "[ ]?['{']";
 	
 	public void processStatement(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
+		// String code = "return (mustafa);";
+		// new ReturnProcessor(thread, translatedLine, code);
 		if (executedSourceLine.startsWith("if")) {
-			new IfProcessor(translatedLine, executedSourceLine);
+			new IfProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.startsWith("for")) {
 			new ForProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.startsWith("while")) {
-			// http://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html
-			
+			new WhileProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.startsWith("switch")) {
-			// http://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html
-			
+			new SwitchProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.startsWith("return")) {
 			new ReturnProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.matches(instantiationStatementRegex)) {
