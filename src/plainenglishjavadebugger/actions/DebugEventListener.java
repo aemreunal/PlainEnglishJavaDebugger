@@ -21,7 +21,6 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 public class DebugEventListener implements IDebugEventSetListener {
 	private final TranslatorViewModel model;
 	private boolean isListening = false;
-	private int debugEventType = -1;
 
 	public DebugEventListener(TranslatorViewModel model) {
 		this.model = model;
@@ -40,7 +39,6 @@ public class DebugEventListener implements IDebugEventSetListener {
 			System.out.println("Started Listening");
 		}
 	}
-
 	// IDebugEventSetListener interface methods begin
 	@Override
 	public void handleDebugEvents(DebugEvent[] debugEvents) {

@@ -1,6 +1,7 @@
 package plainenglishjavadebugger.views.translatorView;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
@@ -21,9 +22,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.BundleException;
 
+import plainenglishjavadebugger.simulationModule.SimulationStackFrame;
+import plainenglishjavadebugger.simulationModule.actions.OpenSimulationFrameAction;
 import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
 import plainenglishjavadebugger.views.translatorView.actions.ClearTranslatorViewAction;
-import plainenglishjavadebugger.views.translatorView.actions.OpenSimulationFrameAction;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -51,7 +53,7 @@ public class TranslatorView extends ViewPart {
 	private Action stepIntoTranslateAction;
 	private Action listDoubleClickAction;
 	private Action openSimultaionFrameAction;
-	private TranslatorViewStackFrame simulationFrame;
+	private SimulationStackFrame simulationFrame;
 	
 	private String[] tableColNames = { "Step #", "Short Translation" };
 	
@@ -167,11 +169,11 @@ public class TranslatorView extends ViewPart {
 	}
 	
 	private void initSimulationFrame() {
-		simulationFrame = new TranslatorViewStackFrame(model);
+		simulationFrame = new SimulationStackFrame(model);
 	}
 	
-	public void addStackNames(String[] stackNames) {
-		simulationFrame.addStackNames(stackNames);
+	public void addStackToFrame(IStackFrame[] stackFrames) throws DebugException {
+		simulationFrame.addStackToFrame(stackFrames);
 	}
 	
 	@Override
@@ -223,7 +225,7 @@ public class TranslatorView extends ViewPart {
 		return listDoubleClickAction;
 	}
 	
-	public synchronized TranslatorViewStackFrame getSimulationFrame() {
+	public synchronized SimulationStackFrame getSimulationFrame() {
 		return simulationFrame;
 	}
 	

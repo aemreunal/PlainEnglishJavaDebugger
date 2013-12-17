@@ -1,16 +1,16 @@
-package plainenglishjavadebugger.views.translatorView.actions;
+package plainenglishjavadebugger.simulationModule.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import plainenglishjavadebugger.simulationModule.SimulationStackFrame;
 import plainenglishjavadebugger.views.translatorView.TranslatorView;
-import plainenglishjavadebugger.views.translatorView.TranslatorViewStackFrame;
 
 public class OpenSimulationFrameAction extends Action{
 	
 	private final TranslatorView view;
-	private final TranslatorViewStackFrame simulationFrame;
+	private final SimulationStackFrame simulationFrame;
 	
 	private final String buttonText = "Open simulation frame.";
 	

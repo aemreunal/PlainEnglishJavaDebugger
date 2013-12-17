@@ -95,7 +95,7 @@ public class TranslatorViewModel {
 	
 	public void stackyThingy() throws DebugException {
 		//System.out.println(thread.getTopStackFrame().getName());
-		view.addStackNames(getCurrentStackNames());
+		view.addStackToFrame(thread.getStackFrames());
 	}
 	
 	private String[] getCurrentStackNames() throws DebugException {
