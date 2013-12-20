@@ -22,7 +22,7 @@ public class SourceCodeProcessor {
 	public static final String assignmentRegex = "(" + "['(']*" + javaNameRegex + "[')']*" + "(['.']|[' ']))*" + javaNameRegex + "[' ']*['='][' ']*";
 	public static final String assignmentPossibilityRegex = "(" + assignmentRegex + ")?";
 	public static final String methodCallStatementRegex = assignmentPossibilityRegex + "(" + messageSendRegex + ")*" + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
-	public static final String instantiationStatementRegex = assignmentPossibilityRegex + "new " + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
+	public static final String instantiationStatementRegex = assignmentPossibilityRegex + "new (" + messageSendRegex + ")*" + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
 	public static final String visibilityDeclarationRegex = "\bprivate\b|\bpublic\b|\bprotected\b";
 	public static final String returnTypeRegex = javaNameRegex;
 	public static final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[' ']" + returnTypeRegex + "[' ']" + javaNameRegex + "[' ']?" + argumentRegex + "[' ']?['{']";
@@ -42,20 +42,20 @@ public class SourceCodeProcessor {
 		} else if (executedSourceLine.matches(incrementRegex)) {
 			new IncrementProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.matches(instantiationStatementRegex)) {
-			// TODO Instantiation processing
+			new InstantiationProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.matches(methodCallStatementRegex)) {
 			new MethodCallProcessor(thread, translatedLine, executedSourceLine);
-			/*
-			 * }
-			 * else if (executedSourceLine.matches(methodEnterStatementRegex)) {
-			 * // Can this ever be reached? Does the debugger highlight method entrances?
-			 * translatedLine.setStatementType(StatementType.METHOD_ENTER);
-			 * translatedLine.setShortDescription("This is a method entrance.");
-			 * translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
-			 * }
-			 */
 		} else {
 			new GenericProcessor(thread, translatedLine, executedSourceLine);
 		}
+		/*
+		 * }
+		 * else if (executedSourceLine.matches(methodEnterStatementRegex)) {
+		 * // Can this ever be reached? Does the debugger highlight method entrances?
+		 * translatedLine.setStatementType(StatementType.METHOD_ENTER);
+		 * translatedLine.setShortDescription("This is a method entrance.");
+		 * translatedLine.setLongDescription(debuggedClassPath + " " + debuggedLineNumber);
+		 * }
+		 */
 	}
 }
