@@ -39,7 +39,7 @@ public class SourceCodeProcessor {
 		} else if (executedSourceLine.startsWith("return")) {
 			new ReturnProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.matches(instantiationStatementRegex)) {
-			
+			// TODO Instantiation processing
 		} else if (executedSourceLine.matches(methodCallStatementRegex)) {
 			new MethodCallProcessor(thread, translatedLine, executedSourceLine);
 			/*
@@ -52,7 +52,7 @@ public class SourceCodeProcessor {
 			 * }
 			 */
 		} else {
-			
+			// TODO default processing
 		}
 	}
 }

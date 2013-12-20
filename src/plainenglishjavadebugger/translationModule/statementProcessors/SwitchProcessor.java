@@ -23,7 +23,7 @@ public class SwitchProcessor extends StatementProcessor {
 	@Override
 	protected void process() {
 		String valueToMatch = removeParantheses(executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')')));
-		translatedLine.setShortDescription("You are now matching the value of \"" + valueToMatch + "\" with cases below.");
+		translatedLine.setShortDescription("Matching the value of \"" + valueToMatch + "\" with cases.");
 		translatedLine.setLongDescription("This statement is a switch-statement.");
 		// +1 to remove the opening parenthesis.
 		translatedLine.appendToLongDescription("This statement matches a value, in this case \"" + valueToMatch + "\",");

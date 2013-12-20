@@ -24,7 +24,7 @@ public class IfProcessor extends StatementProcessor {
 	protected void process() {
 		// +1 to remove the opening parenthesis.
 		String condition = removeParantheses(executedSourceLine.substring(executedSourceLine.indexOf('(') + 1, executedSourceLine.lastIndexOf(')')));
-		translatedLine.setShortDescription("You are now checking a condition.");
+		translatedLine.setShortDescription("Checking condition: " + condition);
 		translatedLine.setLongDescription("This statement is an if-statement.");
 		translatedLine.appendToLongDescription("This statement checks a boolean condition, in this case \"" + condition + "\",");
 		if (isJavaName(condition)) {

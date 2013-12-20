@@ -36,7 +36,7 @@ public class ForProcessor extends StatementProcessor {
 	@Override
 	protected void process() {
 		getParameterInfo();
-		translatedLine.setShortDescription("You are now entering a for-loop of structure \"for (" + firstParam + "; " + secondParam + "; " + thirdParam + ")\".");
+		translatedLine.setShortDescription("Entering for-loop: \"for (" + firstParam + "; " + secondParam + "; " + thirdParam + ")\".");
 		translatedLine.setLongDescription("This statement is a for-loop statement.");
 		appendParamInfo();
 		translatedLine.appendToLongDescription("\n\nFor-loops allow you to repeat the execution of a block of code for a certain amount - more specifically, until the second parameter becomes false.");

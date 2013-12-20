@@ -35,14 +35,14 @@ public class ReturnProcessor extends StatementProcessor {
 	}
 	
 	private void processReturnWithoutValue() {
-		translatedLine.setShortDescription("You are returning to the calling method.");
+		translatedLine.setShortDescription("Returning to the calling method.");
 		translatedLine.appendToLongDescription("This statement returns to the calling method.");
 	}
 	
 	private void processReturnWithValue(int returnValueStartIndex) {
 		// +1 to throw out the space at the beginning, -1 to throw out the semi-colon.
 		String returned = removeParantheses(executedSourceLine.substring(returnValueStartIndex + 1, (executedSourceLine.length() - 1)));
-		translatedLine.setShortDescription("You are returning \"" + returned + "\".");
+		translatedLine.setShortDescription("Returning \"" + returned + "\".");
 		translatedLine.appendToLongDescription("This statement returns a value to the calling method, specifically \"" + returned + "\",");
 		if (isJavaName(returned)) {
 			getVariableValue(returned);

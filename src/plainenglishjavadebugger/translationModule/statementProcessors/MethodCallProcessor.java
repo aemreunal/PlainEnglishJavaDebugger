@@ -31,7 +31,7 @@ public class MethodCallProcessor extends StatementProcessor {
 	@Override
 	protected void process() {
 		processCodeLine();
-		translatedLine.setShortDescription("You are now calling the method \"" + calledMethod + "\".");
+		translatedLine.setShortDescription("Calling the method: \"" + calledMethod + "\".");
 		translatedLine.setLongDescription("This is a method call statement.");
 		translatedLine.appendToLongDescription("This statement lets you call other methods so that they can perform their functions.");
 		translatedLine.appendToLongDescription("A number of arguments can be passed to the methods while calling them.");
