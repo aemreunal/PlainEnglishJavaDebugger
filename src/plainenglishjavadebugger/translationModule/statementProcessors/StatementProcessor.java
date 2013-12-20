@@ -70,4 +70,21 @@ public abstract class StatementProcessor {
 			System.err.println("Unable to get the value of the variable!");
 		}
 	}
+	
+	protected String getSnippetType(String arg) {
+		if (arg.matches(SourceCodeProcessor.instantiationStatementRegex)) {
+			return "a newly instantiated object";
+		} else if (arg.matches(SourceCodeProcessor.methodCallStatementRegex)) {
+			return "another method call";
+		} else if (arg.matches(SourceCodeProcessor.javaNameRegex)) {
+			return "the value of a variable";
+		} else if (arg.matches(SourceCodeProcessor.numberRegex)) {
+			return "a number";
+		} else if (arg.matches(SourceCodeProcessor.stringRegex)) {
+			return "a string";
+		} else if (arg.matches(SourceCodeProcessor.incrementRegex)) {
+			return "an increment";
+		}
+		return "";
+	}
 }

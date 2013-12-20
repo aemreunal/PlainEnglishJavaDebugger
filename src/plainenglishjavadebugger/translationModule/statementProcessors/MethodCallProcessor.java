@@ -87,24 +87,9 @@ public class MethodCallProcessor extends StatementProcessor {
 			translatedLine.appendToLongDescription("\n\nIn this method call, the following argument(s) are passed:\n");
 			for (int i = 0; i < args.size(); i++) {
 				String arg = removeParantheses(args.get(i).trim());
-				translatedLine.appendToLongDescription("\n" + (i + 1) + ") " + arg + getArgumentType(arg));
+				translatedLine.appendToLongDescription("\n" + (i + 1) + ") " + arg + " (" + getSnippetType(arg) + ")");
 			}
 		}
-	}
-	
-	public String getArgumentType(String arg) {
-		if (arg.matches(SourceCodeProcessor.instantiationStatementRegex)) {
-			return " (a newly instantiated object)";
-		} else if (arg.matches(SourceCodeProcessor.methodCallStatementRegex)) {
-			return " (another method call)";
-		} else if (arg.matches(SourceCodeProcessor.javaNameRegex)) {
-			return " (the value of a variable)";
-		} else if (arg.matches(SourceCodeProcessor.numberRegex)) {
-			return " (a number)";
-		} else if (arg.matches(SourceCodeProcessor.stringRegex)) {
-			return " (a string)";
-		}
-		return "";
 	}
 	
 	private void appendAssignmentInfo() {

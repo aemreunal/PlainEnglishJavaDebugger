@@ -18,14 +18,15 @@ public class SourceCodeProcessor {
 	public static final String stringRegex = "['\"'].*['\"']";
 	public static final String javaNameRegex = "[a-zA-Z][a-zA-Z_0-9]*";
 	public static final String argumentRegex = "['('].*[')']";
-	public static final String messageSendRegex = javaNameRegex + "['.']";
-	public static final String assignmentRegex = "(" + javaNameRegex + "(['.']|[' ']))*" + javaNameRegex + "[' ']*['='][' ']*";
+	public static final String messageSendRegex = "['(']*" + javaNameRegex + "[')']*" + "['.']";
+	public static final String assignmentRegex = "(" + "['(']*" + javaNameRegex + "[')']*" + "(['.']|[' ']))*" + javaNameRegex + "[' ']*['='][' ']*";
 	public static final String assignmentPossibilityRegex = "(" + assignmentRegex + ")?";
 	public static final String methodCallStatementRegex = assignmentPossibilityRegex + "(" + messageSendRegex + ")*" + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
 	public static final String instantiationStatementRegex = assignmentPossibilityRegex + "new " + javaNameRegex + "[' ']?" + argumentRegex + "[';']?";
 	public static final String visibilityDeclarationRegex = "\bprivate\b|\bpublic\b|\bprotected\b";
 	public static final String returnTypeRegex = javaNameRegex;
 	public static final String methodEnterStatementRegex = "(" + visibilityDeclarationRegex + ")?" + "[' ']" + returnTypeRegex + "[' ']" + javaNameRegex + "[' ']?" + argumentRegex + "[' ']?['{']";
+	public static final String incrementRegex = "['(']*" + javaNameRegex + "[')']*" + "\\+\\+([';'])?";
 	
 	public void processStatement(IJavaThread thread, TranslatedLine translatedLine, String executedSourceLine) {
 		if (executedSourceLine.startsWith("if")) {
@@ -38,6 +39,8 @@ public class SourceCodeProcessor {
 			new SwitchProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.startsWith("return")) {
 			new ReturnProcessor(thread, translatedLine, executedSourceLine);
+		} else if (executedSourceLine.matches(incrementRegex)) {
+			new IncrementProcessor(thread, translatedLine, executedSourceLine);
 		} else if (executedSourceLine.matches(instantiationStatementRegex)) {
 			// TODO Instantiation processing
 		} else if (executedSourceLine.matches(methodCallStatementRegex)) {
@@ -52,7 +55,7 @@ public class SourceCodeProcessor {
 			 * }
 			 */
 		} else {
-			// TODO default processing
+			new GenericProcessor(thread, translatedLine, executedSourceLine);
 		}
 	}
 }
