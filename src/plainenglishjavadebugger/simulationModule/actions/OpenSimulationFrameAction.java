@@ -5,18 +5,18 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import plainenglishjavadebugger.simulationModule.SimulationStackFrame;
-import plainenglishjavadebugger.views.translatorView.TranslatorView;
+import plainenglishjavadebugger.simulationModule.Simulator;
+import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 public class OpenSimulationFrameAction extends Action{
-	
-	private final TranslatorView view;
+	private Simulator simulator;
 	private final SimulationStackFrame simulationFrame;
 	
 	private final String buttonText = "Open simulation frame.";
 	
-	public OpenSimulationFrameAction(TranslatorView view) {
-		this.view = view;
-		simulationFrame = view.getSimulationFrame();
+	public OpenSimulationFrameAction(TranslatorViewModel model) {
+		simulator = model.getSimulator();
+		simulationFrame = simulator.getSimulationFrame();
 		
 		setText(buttonText);
 		setToolTipText(buttonText);

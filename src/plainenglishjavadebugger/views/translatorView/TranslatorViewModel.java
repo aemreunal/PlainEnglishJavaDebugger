@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
-import org.eclipse.jdt.debug.core.IJavaStackFrame;
 import org.eclipse.jdt.debug.core.IJavaThread;
 import org.eclipse.swt.widgets.Display;
 
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
 import plainenglishjavadebugger.actions.DebugEventListener;
+import plainenglishjavadebugger.simulationModule.SimulationStackFrame;
+import plainenglishjavadebugger.simulationModule.Simulator;
 import plainenglishjavadebugger.translationModule.TranslatedLine;
 import plainenglishjavadebugger.translationModule.Translator;
 
@@ -37,7 +38,8 @@ public class TranslatorViewModel {
 	private final DebugBreakpointListener breakpointListener;
 	private final DebugEventListener eventListener;
 	private final Translator translator;
-
+	
+	private Simulator simulator;
 	private boolean isDebugging = false;
 	private IJavaThread thread;
 
@@ -48,6 +50,7 @@ public class TranslatorViewModel {
 		eventListener = new DebugEventListener(this);
 		breakpointListener = new DebugBreakpointListener(this);
 		translator = new Translator(this);
+		simulator = new Simulator(this);
 	}
 
 	public void initDebugState(IJavaThread thread) {
@@ -97,7 +100,7 @@ public class TranslatorViewModel {
 		if (thread.getTopStackFrame().getName().equals("exit")) {
 			eventListener.setInDebugState(false);
 		} else {
-			view.addStackToFrame(thread.getStackFrames());
+			simulator.addStackToFrame(thread.getStackFrames());
 		}
 	}
 
@@ -141,7 +144,6 @@ public class TranslatorViewModel {
 	public synchronized boolean isDebugging() {
 		return isDebugging;
 	}
-
 	
 	public synchronized void setDebugging(boolean isDebugging) {
 		this.isDebugging = isDebugging;
@@ -158,5 +160,9 @@ public class TranslatorViewModel {
 
 	public DebugEventListener getEventListener() {
 		return eventListener;
+	}
+
+	public Simulator getSimulator() {
+		return simulator;
 	}
 }

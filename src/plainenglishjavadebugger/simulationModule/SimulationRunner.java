@@ -3,16 +3,17 @@ package plainenglishjavadebugger.simulationModule;
 import plainenglishjavadebugger.actions.DebugEventListener;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
-public class SimulationRunner extends Thread{
+public class SimulationRunner extends Thread {
 	TranslatorViewModel model;
 	DebugEventListener debugEventListener;
+	private boolean isSimulating = false;
 	private int sleepTime = 1000;
-	
-	public SimulationRunner(TranslatorViewModel model){
+
+	public SimulationRunner(TranslatorViewModel model) {
 		this.model = model;
 		debugEventListener = model.getEventListener();
 	}
-	
+
 	public void run() {
 		while (debugEventListener.getInDebugState()) {
 			try {
@@ -21,13 +22,24 @@ public class SimulationRunner extends Thread{
 				System.out.println("Cannot sleep");
 				e.printStackTrace();
 			}
-			System.out.println("Runner stepping");
-			model.stepOver();
+			if (isSimulating) {
+				System.out.println("Runner stepping");
+				model.stepOver();
+			}
 		}
 		System.out.println("Runner finished");
 	}
-	
+
 	public synchronized void setSleepTime(int sleepTime) {
-		sleepTime = sleepTime;
+		this.sleepTime = sleepTime;
+	}
+
+	public boolean isSimulating() {
+		return isSimulating;
+	}
+
+	public synchronized void setIsSimulating(boolean isSimulating) {
+		System.out.println("Setting isSimulating");
+		this.isSimulating = isSimulating;
 	}
 }

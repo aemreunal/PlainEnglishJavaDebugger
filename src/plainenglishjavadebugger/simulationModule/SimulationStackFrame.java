@@ -4,30 +4,34 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 
-import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
+import plainenglishjavadebugger.simulationModule.actions.StartSimulationButtonListener;
+import plainenglishjavadebugger.simulationModule.actions.SuspendSimulationButtonListener;
 
 @SuppressWarnings("serial")
 public class SimulationStackFrame extends JFrame {
-	private TranslatorViewModel model;
+	private Simulator simulator;
 	private Container container;
+	private StartSimulationButtonListener startListener;
+	private SuspendSimulationButtonListener suspendListener;
 
-	public SimulationStackFrame(TranslatorViewModel model) {
-		this.model = model;
+	public SimulationStackFrame(Simulator simulator) {
+		this.simulator = simulator;
 
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		init();
@@ -35,16 +39,11 @@ public class SimulationStackFrame extends JFrame {
 	}
 
 	private void init() {
-		setMenuBar();
 		setContainer();
+		setListeners();
+		setMenuBar(new JMenuBar());
 		setMinimumSize(new Dimension(300, 100));
 		setPreferredSize(new Dimension(300, 400));
-	}
-	
-	private void setMenuBar() {
-		JMenu menu = new JMenu();
-		
-		JButton button = new JButton();
 	}
 	
 	private void setContainer() {
@@ -54,6 +53,30 @@ public class SimulationStackFrame extends JFrame {
 				BorderLayout.PAGE_END);
 		
 		add(new JScrollPane(container));
+	}
+	
+	private void setListeners() {
+		startListener = new StartSimulationButtonListener(simulator);
+		suspendListener = new SuspendSimulationButtonListener(simulator);
+	}
+	
+	private void setMenuBar(JMenuBar menuBar) {
+		populateMenuBar(menuBar);
+		setJMenuBar(menuBar);
+	}
+	
+	private void populateMenuBar(JMenuBar menuBar) {
+		JButton startSimulationButton = new JButton("Start");
+		JButton stopSimulationButton = new JButton("Stop");
+		
+//		ImageIcon startIcon = new ImageIcon().setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT));
+		
+		stopSimulationButton.addActionListener(suspendListener);
+		startSimulationButton.addActionListener(startListener);
+		
+		menuBar.add(startSimulationButton);
+		menuBar.add(stopSimulationButton);
+		
 	}
 	
 	public void setVisibility(boolean visible) {
@@ -88,5 +111,13 @@ public class SimulationStackFrame extends JFrame {
 	
 	public Container getContainer() {
 		return container;
+	}
+
+	public StartSimulationButtonListener getStartListener() {
+		return startListener;
+	}
+
+	public SuspendSimulationButtonListener getSuspendListener() {
+		return suspendListener;
 	}
 }

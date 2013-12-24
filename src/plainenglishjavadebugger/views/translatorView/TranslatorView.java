@@ -52,8 +52,7 @@ public class TranslatorView extends ViewPart {
 	private Action stepOverTranslateAction;
 	private Action stepIntoTranslateAction;
 	private Action listDoubleClickAction;
-	private Action openSimultaionFrameAction;
-	private SimulationStackFrame simulationFrame;
+	private Action openSimulationFrameAction;
 	
 	private String[] tableColNames = { "Step #", "Short Translation" };
 	
@@ -76,7 +75,6 @@ public class TranslatorView extends ViewPart {
 		initTableViewer(parent);
 		
 		setHelpSystem();
-		initSimulationFrame();
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
@@ -130,7 +128,7 @@ public class TranslatorView extends ViewPart {
 		// stepOverTranslateAction = new StepOverTranslateAction(this);
 		stepIntoTranslateAction = new ClearTranslatorViewAction(this);
 		listDoubleClickAction = new ListDoubleClickAction(this);
-		openSimultaionFrameAction = new OpenSimulationFrameAction(this);
+		openSimulationFrameAction = new OpenSimulationFrameAction(model);
 	}
 	
 	private void hookContextMenu() {
@@ -158,22 +156,14 @@ public class TranslatorView extends ViewPart {
 		// manager.add(stepOverTranslateAction);
 		// manager.add(new Separator());
 		manager.add(stepIntoTranslateAction);
-		manager.add(openSimultaionFrameAction);
+		manager.add(openSimulationFrameAction);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		// Adds actions to the view's tool bar as small icons on the top right, to the left of the 'minimize' button.
 		// manager.add(stepOverTranslateAction);
 		manager.add(stepIntoTranslateAction);
-		manager.add(openSimultaionFrameAction);
-	}
-	
-	private void initSimulationFrame() {
-		simulationFrame = new SimulationStackFrame(model);
-	}
-	
-	public void addStackToFrame(IStackFrame[] stackFrames) throws DebugException {
-		simulationFrame.addStackToFrame(stackFrames);
+		manager.add(openSimulationFrameAction);
 	}
 	
 	@Override
@@ -223,10 +213,5 @@ public class TranslatorView extends ViewPart {
 	
 	public synchronized Action getListDoubleClickAction() {
 		return listDoubleClickAction;
-	}
-	
-	public synchronized SimulationStackFrame getSimulationFrame() {
-		return simulationFrame;
-	}
-	
+	}	
 }
