@@ -1,11 +1,19 @@
 package plainenglishjavadebugger.actions;
 
 import org.eclipse.debug.core.DebugEvent;
+
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 
 import plainenglishjavadebugger.simulationModule.SimulationRunner;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
+
+/*
+ * This code belongs to:
+ * Ahmet Emre Unal
+ * S001974
+ * emre.unal@ozu.edu.tr
+ */
 
 
 /*
