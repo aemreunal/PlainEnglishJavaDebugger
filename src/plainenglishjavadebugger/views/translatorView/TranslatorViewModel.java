@@ -81,9 +81,9 @@ public class TranslatorViewModel {
 	}
 
 	public void stepOver() {
-		if (thread.canStepOver()){
+		if (thread.canStepOver()) {
 			try {
-				stackyThingy();
+				addStacksToSimulationFrame();
 				thread.stepOver();
 			} catch (DebugException e) {
 				e.printStackTrace();
@@ -92,15 +92,18 @@ public class TranslatorViewModel {
 			stopDebugState();
 		}
 	}
-	
-	public void stackyThingy() throws DebugException {
-		//System.out.println(thread.getTopStackFrame().getName());
-		view.addStackToFrame(thread.getStackFrames());
+
+	public void addStacksToSimulationFrame() throws DebugException {
+		if (thread.getTopStackFrame().getName().equals("exit")) {
+			eventListener.setInDebugState(false);
+		} else {
+			view.addStackToFrame(thread.getStackFrames());
+		}
 	}
-	
+
 	private String[] getCurrentStackNames() throws DebugException {
 		IStackFrame[] stackFrames = thread.getStackFrames();
-		String[] stackNames =  new String[stackFrames.length];
+		String[] stackNames = new String[stackFrames.length];
 		for (int i = 0; i < stackFrames.length; i++) {
 			stackNames[i] = stackFrames[i].getName();
 		}
@@ -139,6 +142,7 @@ public class TranslatorViewModel {
 		return isDebugging;
 	}
 
+	
 	public synchronized void setDebugging(boolean isDebugging) {
 		this.isDebugging = isDebugging;
 		eventListener.setIsListening(isDebugging);
@@ -150,5 +154,9 @@ public class TranslatorViewModel {
 
 	public ArrayList<TranslatedLine> getElements() {
 		return translatedLines;
+	}
+
+	public DebugEventListener getEventListener() {
+		return eventListener;
 	}
 }

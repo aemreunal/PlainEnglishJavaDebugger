@@ -1,6 +1,8 @@
 package plainenglishjavadebugger.actions;
 
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.jdt.core.dom.Message;
 import org.eclipse.jdt.debug.core.IJavaBreakpoint;
 import org.eclipse.jdt.debug.core.IJavaBreakpointListener;
@@ -27,15 +29,10 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	public DebugBreakpointListener(TranslatorViewModel model) {
 		this.model = model;
 		JDIDebugModel.addJavaBreakpointListener(this);
+		//DebugPlugin.getDefault().getBreakpointManager()
 	}
 	
 	private void setDebugInfo(IJavaThread thread, IJavaBreakpoint breakpoint) {
-		try {
-			System.out.println(thread.getTopStackFrame().getName());
-		} catch (DebugException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		model.initDebugState(thread);
 	}
 	
