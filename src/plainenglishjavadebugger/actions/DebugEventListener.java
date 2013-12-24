@@ -17,7 +17,6 @@ public class DebugEventListener implements IDebugEventSetListener {
 	private final TranslatorViewModel model;
 	private boolean isListening = false;
 	private boolean inDebugState = false;
-	private int sleepTime = 500;
 
 	private SimulationRunner runner; 
 
@@ -69,13 +68,5 @@ public class DebugEventListener implements IDebugEventSetListener {
 	// IDebugEventSetListener interface methods end
 	public void setIsListening(boolean isListening) {
 		this.isListening = isListening;
-	}
-
-	public void setSleepTime(int sleepTime) {
-		this.sleepTime = sleepTime;
-	}
-
-	public int getSleepTime() {
-		return sleepTime;
 	}
 }

@@ -13,12 +13,11 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IVariable;
 
+@SuppressWarnings("serial")
 public class SimulationStackInfoPanel extends JPanel{
 	private IStackFrame stackInfo;
-	private Container parent;
-	public SimulationStackInfoPanel(IStackFrame stackInfo, Container parent) {
+	public SimulationStackInfoPanel(IStackFrame stackInfo) {
 		this.stackInfo = stackInfo;
-		this.parent = parent;
 	}
 	public void initInfoPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

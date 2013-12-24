@@ -3,6 +3,9 @@ package plainenglishjavadebugger.simulationModule;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
 
+import plainenglishjavadebugger.simulationModule.actions.SimulationSpeedChangeListener;
+import plainenglishjavadebugger.simulationModule.actions.StartSimulationButtonListener;
+import plainenglishjavadebugger.simulationModule.actions.SuspendSimulationButtonListener;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 public class Simulator {
@@ -12,10 +15,6 @@ public class Simulator {
 	public Simulator(TranslatorViewModel model) {
 		this.model = model;
 		simulationFrame = new SimulationStackFrame(this);
-	}
-	
-	private void init() {
-		
 	}
 	
 	public void addStackToFrame(IStackFrame[] stackFrames) throws DebugException {
@@ -32,5 +31,9 @@ public class Simulator {
 	
 	public SimulationRunner getSimulationRunner() {
 		return simulationFrame.getStartListener().getSimulationRunner();
+	}
+	
+	public void setSimulationSpeed(int speed) {
+		
 	}
 }

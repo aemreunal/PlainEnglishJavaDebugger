@@ -94,7 +94,7 @@ public class SimulationStackFrame extends JFrame {
 		for (IStackFrame stackFrame : stackFrames) {
 			System.out.println(stackFrame.getName());
 			SimulationStackInfoPanel infoPanel = new SimulationStackInfoPanel(
-					stackFrame, this);
+					stackFrame);
 			infoPanel.initInfoPanel();
 			container.add(infoPanel);
 		}
