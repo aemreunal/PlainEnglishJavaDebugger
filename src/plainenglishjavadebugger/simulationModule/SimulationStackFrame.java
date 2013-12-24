@@ -4,10 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,9 +15,8 @@ import javax.swing.JScrollPane;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IStackFrame;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
+import plainenglishjavadebugger.simulationModule.actions.SimulationSpeedChangeListener;
 import plainenglishjavadebugger.simulationModule.actions.StartSimulationButtonListener;
 import plainenglishjavadebugger.simulationModule.actions.SuspendSimulationButtonListener;
 
@@ -29,6 +26,7 @@ public class SimulationStackFrame extends JFrame {
 	private Container container;
 	private StartSimulationButtonListener startListener;
 	private SuspendSimulationButtonListener suspendListener;
+	private SimulationSpeedChangeListener speedChangeListener;
 
 	public SimulationStackFrame(Simulator simulator) {
 		this.simulator = simulator;
@@ -58,6 +56,7 @@ public class SimulationStackFrame extends JFrame {
 	private void setListeners() {
 		startListener = new StartSimulationButtonListener(simulator);
 		suspendListener = new SuspendSimulationButtonListener(simulator);
+		speedChangeListener = new SimulationSpeedChangeListener(simulator);
 	}
 	
 	private void setMenuBar(JMenuBar menuBar) {
@@ -68,14 +67,15 @@ public class SimulationStackFrame extends JFrame {
 	private void populateMenuBar(JMenuBar menuBar) {
 		JButton startSimulationButton = new JButton("Start");
 		JButton stopSimulationButton = new JButton("Stop");
-		
-//		ImageIcon startIcon = new ImageIcon().setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT));
-		
+		JButton speedChangeButton = new JButton("Change Speed");
+				
 		stopSimulationButton.addActionListener(suspendListener);
 		startSimulationButton.addActionListener(startListener);
+		speedChangeButton.addActionListener(speedChangeListener);
 		
 		menuBar.add(startSimulationButton);
 		menuBar.add(stopSimulationButton);
+		menuBar.add(speedChangeButton);
 		
 	}
 	
@@ -107,10 +107,6 @@ public class SimulationStackFrame extends JFrame {
 		for (Component component : comps) {
 			container.remove(component);
 		}
-	}
-	
-	public Container getContainer() {
-		return container;
 	}
 
 	public StartSimulationButtonListener getStartListener() {
