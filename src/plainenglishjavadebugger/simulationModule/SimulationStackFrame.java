@@ -37,7 +37,6 @@ public class SimulationStackFrame extends JFrame {
 
 	public SimulationStackFrame(Simulator simulator) {
 		this.simulator = simulator;
-
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		init();
 		pack();
@@ -97,7 +96,9 @@ public class SimulationStackFrame extends JFrame {
 
 	public void addStackInfo(IStackFrame[] stackFrames) throws DebugException {
 		for (IStackFrame stackFrame : stackFrames) {
-			if (simulator.isMethodNecessary(stackFrame.getName())) {
+			Object debuggedClassSourceElement = stackFrame.getLaunch().getSourceLocator().getSourceElement(stackFrame);
+			if (debuggedClassSourceElement != null) {
+				String classPath = debuggedClassSourceElement.toString();
 				SimulationStackInfoPanel infoPanel = new SimulationStackInfoPanel(
 						stackFrame);
 				infoPanel.initInfoPanel();

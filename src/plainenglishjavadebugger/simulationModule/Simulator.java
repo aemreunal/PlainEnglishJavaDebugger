@@ -17,11 +17,8 @@ public class Simulator {
 	private TranslatorViewModel model;
 	private SimulationStackFrame simulationFrame;
 	private SimulationRunner runner;
-	private String[] systemDefinedMethods = { "doPrivileged",
-			"retargetMouseEvent", "processMouseEvent", "dispatchEvent",
-			"dispatchEventImpl", "doIntersectionPrivilege",
-			"pumpOneEventForFilters", "pumpEventsForFilter",
-			"pumpEventsForHierarchy", "pumpEvents", "access$400" };
+	
+	private final String fileSeperator = System.getProperty("file.seperator");
 
 	DebugEventListener debugEventListener;
 
@@ -63,14 +60,13 @@ public class Simulator {
 			runner.setIsSimulating(false);
 		}
 	}
-
-	public boolean isMethodNecessary(String methodName) {
-		for (String systemMethod : systemDefinedMethods) {
-			if (methodName.equals(systemMethod)) {
-				return false;
-			}
-		}
-		return true;
+	
+	public String getClassName(String path) {
+		System.out.println("File Path = " + path);
+		String[] delimitedPath = path.split(fileSeperator);
+		String className = delimitedPath[delimitedPath.length];
+		String[] delimitedClassName = className.split(".");
+		return delimitedClassName[delimitedClassName.length];
 	}
 
 	public void changeSimulationSpeed(int speed) {
@@ -81,6 +77,8 @@ public class Simulator {
 
 	public void reset() {
 		simulationFrame.removeComponentsFromContentPane();
+		simulationFrame.repaint();
+		simulationFrame.pack();
 		runner = null;
 	}
 }

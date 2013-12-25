@@ -61,7 +61,6 @@ public class DebugBreakpointListener implements IJavaBreakpointListener {
 	
 	@Override
 	public int breakpointHit(IJavaThread thread, IJavaBreakpoint breakpoint) {
-		System.out.println("Just hit a breakpoint!");
 		setDebugInfo(thread, breakpoint);
 		return 0;
 	}

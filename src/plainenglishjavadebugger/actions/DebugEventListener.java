@@ -34,6 +34,7 @@ public class DebugEventListener implements IDebugEventSetListener {
 	public void startListening() {
 		if (!isListening) {
 			DebugPlugin.getDefault().addDebugEventListener(this);
+			setInDebugState(true);
 			System.out.println("Started Listening");
 		}
 	}
@@ -41,7 +42,7 @@ public class DebugEventListener implements IDebugEventSetListener {
 	public void stopListening() {
 		if (isListening) {
 			DebugPlugin.getDefault().removeDebugEventListener(this);
-			inDebugState = false;
+			setInDebugState(false);
 			System.out.println("Stopped Listening");
 		}
 	}
@@ -52,7 +53,6 @@ public class DebugEventListener implements IDebugEventSetListener {
 		for (DebugEvent debugEvent : debugEvents) {
 			if (debugEvent.getKind() == DebugEvent.CREATE) {
 				System.out.println("CREATE");
-				setInDebugState(true);
 			} else if((debugEvent.getKind() == DebugEvent.STEP_INTO) || (debugEvent.getKind() == DebugEvent.STEP_OVER) || (debugEvent.getKind() == DebugEvent.STEP_RETURN)) {
 				model.addStacksToSimulationFrame();
 			}
