@@ -64,7 +64,7 @@ public class DebugEventListener implements IDebugEventSetListener {
 		return inDebugState;
 	}
 	
-	public synchronized void setInDebugState(boolean inDebugState) {
+	public void setInDebugState(boolean inDebugState) {
 		this.inDebugState = inDebugState;
 		model.setDebugging(inDebugState);
 	}
