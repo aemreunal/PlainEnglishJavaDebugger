@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Display;
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
 import plainenglishjavadebugger.actions.DebugEventListener;
 import plainenglishjavadebugger.simulationModule.Simulator;
+import plainenglishjavadebugger.translationModule.StatementType;
 import plainenglishjavadebugger.translationModule.TranslatedLine;
 import plainenglishjavadebugger.translationModule.Translator;
 
@@ -38,29 +39,29 @@ public class TranslatorViewModel {
 	private final DebugEventListener eventListener;
 	private final Translator translator;
 	private final ArrayList<TranslatedLine> translatedLines;
-	
+
 	private boolean isDebugging = false;
 	private IJavaThread thread;
-	
+
 	private Simulator simulator;
-	
+
 	public TranslatorViewModel(TranslatorView view) {
 		this.view = view;
 		translatedLines = new ArrayList<TranslatedLine>();
 		eventListener = new DebugEventListener(this);
 		breakpointListener = new DebugBreakpointListener(this);
 		translator = new Translator(this);
-		
+
 		simulator = new Simulator(this);
 	}
-	
+
 	public void initDebugState(IJavaThread thread) {
 		this.thread = thread;
 		eventListener.startListening();
 		translator.setThread(thread);
 		setDebugging(true);
 	}
-	
+
 	public void stopDebugState() {
 		thread = null;
 		eventListener.stopListening();
@@ -70,31 +71,31 @@ public class TranslatorViewModel {
 		setDebugging(false);
 		simulator.reset();
 	}
-	
+
 	public void respondToDebugEvent(final int debugEventType) {
 		if (isDebugging) {
 			translator.translate(debugEventType);
 		}
 	}
-	
+
 	// TranslatorView actions
 	public void addTranslatedLine(TranslatedLine translatedLine) {
 		translatedLines.add(translatedLine);
 		refreshView();
 	}
-	
+
 	public void removeTranslatedLine() {
 		if (translatedLines.size() > 0) {
 			translatedLines.remove(translatedLines.size() - 1);
 		}
 		refreshView();
 	}
-	
+
 	public void removeAllTranslatedLines() {
 		translatedLines.clear();
 		refreshView();
 	}
-	
+
 	private void refreshView() {
 		// Required to run UI refresh as part of UI thread system.
 		Display.getDefault().syncExec(new Runnable() {
@@ -104,17 +105,35 @@ public class TranslatorViewModel {
 			}
 		});
 	}
-	
+
 	// Simulation methods begin
-	
-	public void stepInto() {
-		try {
-			thread.stepInto();
-		} catch (DebugException e) {
-			e.printStackTrace();
+
+	public void nextStep() {
+		if (translatedLines.size() > 0) {
+			TranslatedLine lastLine = translatedLines.get(translatedLines
+					.size() - 1);
+			if (lastLine.getStatementType() == StatementType.METHOD_CALL) {
+				stepInto();
+			} else {
+				stepOver();
+			}
+		} else {
+			stepOver();
 		}
 	}
-	
+
+	public void stepInto() {
+		if ((thread != null) && (thread.canStepInto())) {
+			try {
+				thread.stepInto();
+			} catch (DebugException e) {
+				e.printStackTrace();
+			}
+		} else {
+			stopDebugState();
+		}
+	}
+
 	public void stepOver() {
 		if ((thread != null) && (thread.canStepOver())) {
 			try {
@@ -126,10 +145,12 @@ public class TranslatorViewModel {
 			stopDebugState();
 		}
 	}
-	
+
 	public void addStacksToSimulationFrame() {
 		try {
-			if (thread == null || (thread.getTopStackFrame() != null && thread.getTopStackFrame().getName().equals("exit"))) {
+			if (thread == null
+					|| (thread.getTopStackFrame() != null && thread
+							.getTopStackFrame().getName().equals("exit"))) {
 				eventListener.setInDebugState(false);
 			} else {
 				simulator.addStackToFrame(thread.getStackFrames());
@@ -138,7 +159,7 @@ public class TranslatorViewModel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private String[] getCurrentStackNames() throws DebugException {
 		IStackFrame[] stackFrames = thread.getStackFrames();
 		String[] stackNames = new String[stackFrames.length];
@@ -147,34 +168,34 @@ public class TranslatorViewModel {
 		}
 		return stackNames;
 	}
-	
+
 	public void resetSimulator() {
 		simulator.reset();
 	}
-	
+
 	// Simulation methods end
-	
+
 	public synchronized boolean isDebugging() {
 		return isDebugging;
 	}
-	
+
 	public synchronized void setDebugging(boolean isDebugging) {
 		this.isDebugging = isDebugging;
 		eventListener.setIsListening(isDebugging);
 	}
-	
+
 	public DebugEventListener getEventListener() {
 		return eventListener;
 	}
-	
+
 	public Simulator getSimulator() {
 		return simulator;
 	}
-	
+
 	public synchronized IJavaThread getThread() {
 		return thread;
 	}
-	
+
 	public ArrayList<TranslatedLine> getElements() {
 		return translatedLines;
 	}

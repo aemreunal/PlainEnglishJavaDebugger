@@ -32,7 +32,7 @@ public class SimulationRunner extends Thread {
 				e.printStackTrace();
 			}
 			if (isSimulating) {
-				model.stepOver();
+				model.nextStep();
 			}
 		}
 		System.out.println("Runner finished");
