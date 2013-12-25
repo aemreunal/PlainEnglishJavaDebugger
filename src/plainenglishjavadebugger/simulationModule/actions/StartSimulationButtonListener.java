@@ -6,6 +6,16 @@ import java.awt.event.ActionListener;
 import plainenglishjavadebugger.simulationModule.SimulationRunner;
 import plainenglishjavadebugger.simulationModule.Simulator;
 
+/*
+ * This code belongs to:
+ * ‚elebi Murat
+ * S001751
+ * celebi.murat@ozu.edu.tr
+ */
+
+
+
+
 public class StartSimulationButtonListener implements ActionListener {
 	private Simulator simulator;
 	private SimulationRunner runner;
@@ -16,13 +26,7 @@ public class StartSimulationButtonListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (runner == null) {
-			runner = new SimulationRunner(simulator.getModel());
-			runner.setIsSimulating(true);
-			runner.start();
-		} else if(!runner.isSimulating()) {
-			runner.setIsSimulating(true);
-		}
+		simulator.startSimulation();
 	}
 	
 	public SimulationRunner getSimulationRunner() {

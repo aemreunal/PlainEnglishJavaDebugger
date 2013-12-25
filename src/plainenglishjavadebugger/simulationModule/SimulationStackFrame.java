@@ -20,6 +20,13 @@ import plainenglishjavadebugger.simulationModule.actions.SimulationSpeedChangeLi
 import plainenglishjavadebugger.simulationModule.actions.StartSimulationButtonListener;
 import plainenglishjavadebugger.simulationModule.actions.SuspendSimulationButtonListener;
 
+/*
+ * This code belongs to:
+ * ‚elebi Murat
+ * S001751
+ * celebi.murat@ozu.edu.tr
+ */
+
 @SuppressWarnings("serial")
 public class SimulationStackFrame extends JFrame {
 	private Simulator simulator;
@@ -39,46 +46,45 @@ public class SimulationStackFrame extends JFrame {
 	private void init() {
 		setContainer();
 		setListeners();
+
+		setName("Simulation Window");
+		add(new JScrollPane(container));
 		setMenuBar(new JMenuBar());
 		setMinimumSize(new Dimension(300, 100));
 		setPreferredSize(new Dimension(300, 400));
 	}
-	
+
 	private void setContainer() {
 		container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-		container.add(new JLabel("This is the Simulation Window"),
-				BorderLayout.PAGE_END);
-		
-		add(new JScrollPane(container));
 	}
-	
+
 	private void setListeners() {
 		startListener = new StartSimulationButtonListener(simulator);
 		suspendListener = new SuspendSimulationButtonListener(simulator);
 		speedChangeListener = new SimulationSpeedChangeListener(simulator);
 	}
-	
+
 	private void setMenuBar(JMenuBar menuBar) {
 		populateMenuBar(menuBar);
 		setJMenuBar(menuBar);
 	}
-	
+
 	private void populateMenuBar(JMenuBar menuBar) {
 		JButton startSimulationButton = new JButton("Start");
 		JButton stopSimulationButton = new JButton("Stop");
 		JButton speedChangeButton = new JButton("Change Speed");
-				
+
 		stopSimulationButton.addActionListener(suspendListener);
 		startSimulationButton.addActionListener(startListener);
 		speedChangeButton.addActionListener(speedChangeListener);
-		
+
 		menuBar.add(startSimulationButton);
 		menuBar.add(stopSimulationButton);
 		menuBar.add(speedChangeButton);
-		
+
 	}
-	
+
 	public void setVisibility(boolean visible) {
 		setVisible(visible);
 	}
@@ -90,19 +96,19 @@ public class SimulationStackFrame extends JFrame {
 	}
 
 	public void addStackInfo(IStackFrame[] stackFrames) throws DebugException {
-		System.out.println("Adding Stack Names:");
 		for (IStackFrame stackFrame : stackFrames) {
-			System.out.println(stackFrame.getName());
-			SimulationStackInfoPanel infoPanel = new SimulationStackInfoPanel(
-					stackFrame);
-			infoPanel.initInfoPanel();
-			container.add(infoPanel);
+			if (simulator.isMethodNecessary(stackFrame.getName())) {
+				SimulationStackInfoPanel infoPanel = new SimulationStackInfoPanel(
+						stackFrame);
+				infoPanel.initInfoPanel();
+				container.add(infoPanel);
+			}
 		}
 		repaint();
 		pack();
 	}
 
-	private void removeComponentsFromContentPane() {
+	public void removeComponentsFromContentPane() {
 		Component[] comps = container.getComponents();
 		for (Component component : comps) {
 			container.remove(component);

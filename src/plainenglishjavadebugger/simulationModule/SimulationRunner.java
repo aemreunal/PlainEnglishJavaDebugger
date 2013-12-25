@@ -3,6 +3,16 @@ package plainenglishjavadebugger.simulationModule;
 import plainenglishjavadebugger.actions.DebugEventListener;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
+/*
+ * This code belongs to:
+ * ‚elebi Murat
+ * S001751
+ * celebi.murat@ozu.edu.tr
+ */
+
+
+
+
 public class SimulationRunner extends Thread {
 	TranslatorViewModel model;
 	DebugEventListener debugEventListener;
@@ -19,11 +29,9 @@ public class SimulationRunner extends Thread {
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
-				System.out.println("Cannot sleep");
 				e.printStackTrace();
 			}
 			if (isSimulating) {
-				System.out.println("Runner stepping");
 				model.stepOver();
 			}
 		}
@@ -39,7 +47,6 @@ public class SimulationRunner extends Thread {
 	}
 
 	public synchronized void setIsSimulating(boolean isSimulating) {
-		System.out.println("Setting isSimulating");
 		this.isSimulating = isSimulating;
 	}
 }

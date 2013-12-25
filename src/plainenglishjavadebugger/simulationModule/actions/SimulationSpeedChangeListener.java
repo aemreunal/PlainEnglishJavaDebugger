@@ -8,10 +8,19 @@ import javax.swing.JOptionPane;
 import plainenglishjavadebugger.simulationModule.SimulationRunner;
 import plainenglishjavadebugger.simulationModule.Simulator;
 
+/*
+ * This code belongs to:
+ * ‚elebi Murat
+ * S001751
+ * celebi.murat@ozu.edu.tr
+ */
+
+
+
+
 public class SimulationSpeedChangeListener implements ActionListener{
 
 	private Simulator simulator;
-	private SimulationRunner runner;
 
 	public SimulationSpeedChangeListener(Simulator simulator) {
 		this.simulator = simulator;
@@ -20,10 +29,7 @@ public class SimulationSpeedChangeListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		String speed = JOptionPane.showInputDialog("Simulation Speed(ms)");
-		runner = simulator.getSimulationRunner();
-		if (runner != null) {
-			runner.setSleepTime(Integer.parseInt(speed));
-		}
+		simulator.changeSimulationSpeed(Integer.parseInt(speed));
 	}
 
 }

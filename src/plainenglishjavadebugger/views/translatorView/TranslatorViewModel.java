@@ -61,12 +61,12 @@ public class TranslatorViewModel {
 	}
 
 	public void stopDebugState() {
-		System.out.println("Stop Debug State");
 		thread = null;
 		eventListener.stopListening();
 		translator.clearThread();
 		removeAllTranslatedLines();
 		setDebugging(false);
+		simulator.reset();
 	}
 
 	public void respondToDebugEvent(final int debugEventType) {
@@ -84,9 +84,8 @@ public class TranslatorViewModel {
 	}
 
 	public void stepOver() {
-		if (thread.canStepOver()) {
+		if ((thread != null) && (thread.canStepOver())) {
 			try {
-				addStacksToSimulationFrame();
 				thread.stepOver();
 			} catch (DebugException e) {
 				e.printStackTrace();
@@ -96,11 +95,15 @@ public class TranslatorViewModel {
 		}
 	}
 
-	public void addStacksToSimulationFrame() throws DebugException {
-		if (thread.getTopStackFrame().getName().equals("exit")) {
-			eventListener.setInDebugState(false);
-		} else {
-			simulator.addStackToFrame(thread.getStackFrames());
+	public void addStacksToSimulationFrame() {
+		try {
+			if (thread == null || (thread.getTopStackFrame() != null && thread.getTopStackFrame().getName().equals("exit"))) {
+				eventListener.setInDebugState(false);
+			} else {
+				simulator.addStackToFrame(thread.getStackFrames());
+			}
+		} catch (DebugException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -139,6 +142,10 @@ public class TranslatorViewModel {
 				view.refresh();
 			}
 		});
+	}
+	
+	public void resetSimulator() {
+		simulator.reset();
 	}
 
 	public synchronized boolean isDebugging() {

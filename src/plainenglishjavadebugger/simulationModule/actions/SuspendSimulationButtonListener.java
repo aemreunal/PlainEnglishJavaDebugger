@@ -6,9 +6,18 @@ import java.awt.event.ActionListener;
 import plainenglishjavadebugger.simulationModule.SimulationRunner;
 import plainenglishjavadebugger.simulationModule.Simulator;
 
+/*
+ * This code belongs to:
+ * ‚elebi Murat
+ * S001751
+ * celebi.murat@ozu.edu.tr
+ */
+
+
+
+
 public class SuspendSimulationButtonListener implements ActionListener {
 	private Simulator simulator;
-	private SimulationRunner runner;
 
 	public SuspendSimulationButtonListener(Simulator simulator) {
 		this.simulator = simulator;
@@ -16,12 +25,6 @@ public class SuspendSimulationButtonListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		runner = simulator.getSimulationRunner();
-		if (!((runner == null) || (!runner.isSimulating()))) {
-			// This is because if first statement is false second one should be
-			// checked. Statement equals to ((runner not null) and (runner is
-			// simulating))
-			runner.setIsSimulating(false);
-		}
+		simulator.suspendSimulation();
 	}
 }

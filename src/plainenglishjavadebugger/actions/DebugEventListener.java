@@ -2,6 +2,7 @@ package plainenglishjavadebugger.actions;
 
 import org.eclipse.debug.core.DebugEvent;
 
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 
@@ -26,8 +27,6 @@ public class DebugEventListener implements IDebugEventSetListener {
 	private boolean isListening = false;
 	private boolean inDebugState = false;
 
-	private SimulationRunner runner; 
-
 	public DebugEventListener(TranslatorViewModel model) {
 		this.model = model;
 	}
@@ -42,12 +41,8 @@ public class DebugEventListener implements IDebugEventSetListener {
 	public void stopListening() {
 		if (isListening) {
 			DebugPlugin.getDefault().removeDebugEventListener(this);
+			inDebugState = false;
 			System.out.println("Stopped Listening");
-			try {
-				runner.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -56,12 +51,12 @@ public class DebugEventListener implements IDebugEventSetListener {
 	public void handleDebugEvents(DebugEvent[] debugEvents) {
 		for (DebugEvent debugEvent : debugEvents) {
 			if (debugEvent.getKind() == DebugEvent.CREATE) {
+				System.out.println("CREATE");
 				setInDebugState(true);
-				runner = new SimulationRunner(model);
-				runner.start();
+			} else if((debugEvent.getKind() == DebugEvent.STEP_INTO) || (debugEvent.getKind() == DebugEvent.STEP_OVER) || (debugEvent.getKind() == DebugEvent.STEP_RETURN)) {
+				model.addStacksToSimulationFrame();
 			}
 		}
-
 	}
 
 	public boolean getInDebugState() {

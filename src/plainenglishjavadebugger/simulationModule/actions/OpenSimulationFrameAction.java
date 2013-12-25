@@ -8,6 +8,16 @@ import plainenglishjavadebugger.simulationModule.SimulationStackFrame;
 import plainenglishjavadebugger.simulationModule.Simulator;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
+/*
+ * This code belongs to:
+ * ‚elebi Murat
+ * S001751
+ * celebi.murat@ozu.edu.tr
+ */
+
+
+
+
 public class OpenSimulationFrameAction extends Action{
 	private Simulator simulator;
 	private final SimulationStackFrame simulationFrame;
