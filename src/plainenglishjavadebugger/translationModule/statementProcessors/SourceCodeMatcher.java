@@ -11,7 +11,7 @@ import plainenglishjavadebugger.translationModule.TranslatedLine;
  * emre.unal@ozu.edu.tr
  */
 
-public class SourceCodeProcessor {
+public class SourceCodeMatcher {
 	// Java regex info: http://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html
 	public static final String whiteSpaceRegex = "\\s*";
 	public static final String numberRegex = "[0-9]*(['.'][0-9]*)?";

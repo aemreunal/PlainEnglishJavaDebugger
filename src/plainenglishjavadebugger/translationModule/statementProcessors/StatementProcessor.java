@@ -55,7 +55,7 @@ public abstract class StatementProcessor {
 	}
 	
 	protected boolean isJavaName(String condition) {
-		return condition.matches(SourceCodeProcessor.javaNameRegex);
+		return condition.matches(SourceCodeMatcher.javaNameRegex);
 	}
 	
 	protected void getVariableValue(String variable) {
@@ -72,17 +72,17 @@ public abstract class StatementProcessor {
 	}
 	
 	protected String getSnippetType(String arg) {
-		if (arg.matches(SourceCodeProcessor.instantiationStatementRegex)) {
+		if (arg.matches(SourceCodeMatcher.instantiationStatementRegex)) {
 			return "a newly instantiated object";
-		} else if (arg.matches(SourceCodeProcessor.methodCallStatementRegex)) {
+		} else if (arg.matches(SourceCodeMatcher.methodCallStatementRegex)) {
 			return "another method call";
-		} else if (arg.matches(SourceCodeProcessor.javaNameRegex)) {
+		} else if (arg.matches(SourceCodeMatcher.javaNameRegex)) {
 			return "the value of a variable";
-		} else if (arg.matches(SourceCodeProcessor.numberRegex)) {
+		} else if (arg.matches(SourceCodeMatcher.numberRegex)) {
 			return "a number";
-		} else if (arg.matches(SourceCodeProcessor.stringRegex)) {
+		} else if (arg.matches(SourceCodeMatcher.stringRegex)) {
 			return "a string";
-		} else if (arg.matches(SourceCodeProcessor.incrementRegex)) {
+		} else if (arg.matches(SourceCodeMatcher.incrementRegex)) {
 			return "an increment";
 		}
 		return "";

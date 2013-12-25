@@ -5,7 +5,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jdt.debug.core.IJavaThread;
 
 import plainenglishjavadebugger.translationModule.fileReader.SourceFileReader;
-import plainenglishjavadebugger.translationModule.statementProcessors.SourceCodeProcessor;
+import plainenglishjavadebugger.translationModule.statementProcessors.SourceCodeMatcher;
 import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 /*
@@ -31,7 +31,7 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 public class Translator {
 	private final TranslatorViewModel model;
 	private final SourceFileReader sourceFileReader;
-	private final SourceCodeProcessor sourceCodeProcessor;
+	private final SourceCodeMatcher sourceCodeProcessor;
 	
 	private IJavaThread thread;
 	
@@ -48,16 +48,8 @@ public class Translator {
 	public Translator(TranslatorViewModel model) {
 		this.model = model;
 		sourceFileReader = new SourceFileReader();
-		sourceCodeProcessor = new SourceCodeProcessor();
+		sourceCodeProcessor = new SourceCodeMatcher();
 		resetTranslator();
-	}
-	
-	public void setThread(IJavaThread thread) {
-		this.thread = thread;
-	}
-	
-	public void clearThread() {
-		thread = null;
 	}
 	
 	// The method that does the translation work
@@ -131,5 +123,13 @@ public class Translator {
 			}
 		}
 		return false;
+	}
+	
+	public void setThread(IJavaThread thread) {
+		this.thread = thread;
+	}
+	
+	public void clearThread() {
+		thread = null;
 	}
 }

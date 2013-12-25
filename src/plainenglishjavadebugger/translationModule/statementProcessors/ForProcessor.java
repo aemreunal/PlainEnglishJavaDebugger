@@ -79,8 +79,8 @@ public class ForProcessor extends StatementProcessor {
 		secondParam = removeParantheses(executedSourceLine.substring(firstParamIndex + 1, secondParamIndex).trim());
 		thirdParam = removeParantheses(executedSourceLine.substring(secondParamIndex + 1, thirdParamIndex).trim());
 		
-		firstParamExists = !(paramStartIndex + 1 == firstParamIndex || firstParam.matches(SourceCodeProcessor.whiteSpaceRegex));
-		secondParamExists = !(firstParamIndex + 1 == secondParamIndex || secondParam.matches(SourceCodeProcessor.whiteSpaceRegex));
-		thirdParamExists = !(secondParamIndex + 1 == thirdParamIndex || thirdParam.matches(SourceCodeProcessor.whiteSpaceRegex));
+		firstParamExists = !(paramStartIndex + 1 == firstParamIndex || firstParam.matches(SourceCodeMatcher.whiteSpaceRegex));
+		secondParamExists = !(firstParamIndex + 1 == secondParamIndex || secondParam.matches(SourceCodeMatcher.whiteSpaceRegex));
+		thirdParamExists = !(secondParamIndex + 1 == thirdParamIndex || thirdParam.matches(SourceCodeMatcher.whiteSpaceRegex));
 	}
 }

@@ -68,7 +68,7 @@ public class MethodCallProcessor extends StatementProcessor {
 			if (nextComma == -1) {
 				// There is no comma
 				String argument = executedSourceLine.substring(paramStartIndex + 1, lastParantheses);
-				if (argument.matches(SourceCodeProcessor.whiteSpaceRegex) || argument.isEmpty()) {
+				if (argument.matches(SourceCodeMatcher.whiteSpaceRegex) || argument.isEmpty()) {
 					// No argument, do nothing
 				} else {
 					args.add(argument);
@@ -87,7 +87,12 @@ public class MethodCallProcessor extends StatementProcessor {
 			translatedLine.appendToLongDescription("\n\nIn this method call, the following argument(s) are passed:\n");
 			for (int i = 0; i < args.size(); i++) {
 				String arg = removeParantheses(args.get(i).trim());
-				translatedLine.appendToLongDescription("\n" + (i + 1) + ") " + arg + " (" + getSnippetType(arg) + ")");
+				String snippet = getSnippetType(arg);
+				if (snippet.equals("")) {
+					translatedLine.appendToLongDescription("\n" + (i + 1) + ") " + arg);
+				} else {
+					translatedLine.appendToLongDescription("\n" + (i + 1) + ") " + arg + " --> (" + getSnippetType(arg) + ")");
+				}
 			}
 		}
 	}
