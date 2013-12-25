@@ -16,8 +16,10 @@ import org.eclipse.debug.core.model.IVariable;
 @SuppressWarnings("serial")
 public class SimulationStackInfoPanel extends JPanel{
 	private IStackFrame stackInfo;
-	public SimulationStackInfoPanel(IStackFrame stackInfo) {
+	private String className;
+	public SimulationStackInfoPanel(IStackFrame stackInfo, String className) {
 		this.stackInfo = stackInfo;
+		this.className = className;
 	}
 	public void initInfoPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,7 +34,7 @@ public class SimulationStackInfoPanel extends JPanel{
 	}
 	
 	private void setBorder() throws DebugException {
-		TitledBorder border = BorderFactory.createTitledBorder(stackInfo.getName());
+		TitledBorder border = BorderFactory.createTitledBorder(className + "." + stackInfo.getName());
 		setBorder(border);
 	}
 	

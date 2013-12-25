@@ -100,7 +100,7 @@ public class SimulationStackFrame extends JFrame {
 			if (debuggedClassSourceElement != null) {
 				String classPath = debuggedClassSourceElement.toString();
 				SimulationStackInfoPanel infoPanel = new SimulationStackInfoPanel(
-						stackFrame);
+						stackFrame, simulator.getClassName(classPath));
 				infoPanel.initInfoPanel();
 				container.add(infoPanel);
 			}

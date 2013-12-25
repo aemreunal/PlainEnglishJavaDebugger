@@ -17,8 +17,8 @@ public class Simulator {
 	private TranslatorViewModel model;
 	private SimulationStackFrame simulationFrame;
 	private SimulationRunner runner;
-	
-	private final String fileSeperator = System.getProperty("file.seperator");
+
+	private final String fileSeperator = System.getProperty("file.separator");
 
 	DebugEventListener debugEventListener;
 
@@ -60,13 +60,12 @@ public class Simulator {
 			runner.setIsSimulating(false);
 		}
 	}
-	
+
 	public String getClassName(String path) {
 		System.out.println("File Path = " + path);
 		String[] delimitedPath = path.split(fileSeperator);
-		String className = delimitedPath[delimitedPath.length];
-		String[] delimitedClassName = className.split(".");
-		return delimitedClassName[delimitedClassName.length];
+		String className = delimitedPath[delimitedPath.length - 1];
+		return className.substring(0, className.length() - 5); // It return class name without extension (Normally class name ends with ".java").
 	}
 
 	public void changeSimulationSpeed(int speed) {
