@@ -124,4 +124,8 @@ public class TranslatedLine {
 	public synchronized void setStatementType(StatementType statementType) {
 		this.statementType = statementType;
 	}
+	
+	public static void resetItemNumbering() {
+		TranslatedLine.itemNumber = 0;
+	}
 }

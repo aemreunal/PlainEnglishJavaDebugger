@@ -66,6 +66,7 @@ public class TranslatorViewModel {
 		eventListener.stopListening();
 		translator.clearThread();
 		removeAllTranslatedLines();
+		TranslatedLine.resetItemNumbering();
 		setDebugging(false);
 		simulator.reset();
 	}
