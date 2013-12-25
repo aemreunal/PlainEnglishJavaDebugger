@@ -20,8 +20,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.osgi.framework.BundleException;
 
-import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
+import plainenglishjavadebugger.simulationModule.actions.OpenSimulationFrameAction;
 import plainenglishjavadebugger.views.translatorView.actions.ClearTranslatorViewAction;
+import plainenglishjavadebugger.views.translatorView.actions.ListDoubleClickAction;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view shows data obtained
@@ -45,9 +46,9 @@ public class TranslatorView extends ViewPart {
 	private final TranslatorViewModel model;
 	
 	private TableViewer viewer;
-	private Action stepOverTranslateAction;
 	private Action stepIntoTranslateAction;
 	private Action listDoubleClickAction;
+	private Action openSimulationFrameAction;
 	
 	private String[] tableColNames = { "Step #", "Short Translation" };
 	
@@ -123,6 +124,7 @@ public class TranslatorView extends ViewPart {
 		// stepOverTranslateAction = new StepOverTranslateAction(this);
 		stepIntoTranslateAction = new ClearTranslatorViewAction(this);
 		listDoubleClickAction = new ListDoubleClickAction(this);
+		openSimulationFrameAction = new OpenSimulationFrameAction(model);
 	}
 	
 	private void hookContextMenu() {
@@ -150,12 +152,14 @@ public class TranslatorView extends ViewPart {
 		// manager.add(stepOverTranslateAction);
 		// manager.add(new Separator());
 		manager.add(stepIntoTranslateAction);
+		manager.add(openSimulationFrameAction);
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
 		// Adds actions to the view's tool bar as small icons on the top right, to the left of the 'minimize' button.
 		// manager.add(stepOverTranslateAction);
 		manager.add(stepIntoTranslateAction);
+		manager.add(openSimulationFrameAction);
 	}
 	
 	@Override

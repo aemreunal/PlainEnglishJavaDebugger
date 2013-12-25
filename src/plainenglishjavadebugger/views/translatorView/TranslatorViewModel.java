@@ -2,11 +2,14 @@ package plainenglishjavadebugger.views.translatorView;
 
 import java.util.ArrayList;
 
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.jdt.debug.core.IJavaThread;
 import org.eclipse.swt.widgets.Display;
 
 import plainenglishjavadebugger.actions.DebugBreakpointListener;
 import plainenglishjavadebugger.actions.DebugEventListener;
+import plainenglishjavadebugger.simulationModule.Simulator;
 import plainenglishjavadebugger.translationModule.TranslatedLine;
 import plainenglishjavadebugger.translationModule.Translator;
 
@@ -39,12 +42,16 @@ public class TranslatorViewModel {
 	private boolean isDebugging = false;
 	private IJavaThread thread;
 	
+	private Simulator simulator;
+	
 	public TranslatorViewModel(TranslatorView view) {
 		this.view = view;
 		translatedLines = new ArrayList<TranslatedLine>();
 		eventListener = new DebugEventListener(this);
 		breakpointListener = new DebugBreakpointListener(this);
 		translator = new Translator(this);
+		
+		simulator = new Simulator(this);
 	}
 	
 	public void initDebugState(IJavaThread thread) {
@@ -60,6 +67,7 @@ public class TranslatorViewModel {
 		translator.clearThread();
 		removeAllTranslatedLines();
 		setDebugging(false);
+		simulator.reset();
 	}
 	
 	public void respondToDebugEvent(final int debugEventType) {
@@ -96,12 +104,70 @@ public class TranslatorViewModel {
 		});
 	}
 	
+	// Simulation methods begin
+	
+	public void stepInto() {
+		try {
+			thread.stepInto();
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void stepOver() {
+		if ((thread != null) && (thread.canStepOver())) {
+			try {
+				thread.stepOver();
+			} catch (DebugException e) {
+				e.printStackTrace();
+			}
+		} else {
+			stopDebugState();
+		}
+	}
+	
+	public void addStacksToSimulationFrame() {
+		try {
+			if (thread == null || (thread.getTopStackFrame() != null && thread.getTopStackFrame().getName().equals("exit"))) {
+				eventListener.setInDebugState(false);
+			} else {
+				simulator.addStackToFrame(thread.getStackFrames());
+			}
+		} catch (DebugException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String[] getCurrentStackNames() throws DebugException {
+		IStackFrame[] stackFrames = thread.getStackFrames();
+		String[] stackNames = new String[stackFrames.length];
+		for (int i = 0; i < stackFrames.length; i++) {
+			stackNames[i] = stackFrames[i].getName();
+		}
+		return stackNames;
+	}
+	
+	public void resetSimulator() {
+		simulator.reset();
+	}
+	
+	// Simulation methods end
+	
 	public synchronized boolean isDebugging() {
 		return isDebugging;
 	}
 	
 	public synchronized void setDebugging(boolean isDebugging) {
 		this.isDebugging = isDebugging;
+		eventListener.setIsListening(isDebugging);
+	}
+	
+	public DebugEventListener getEventListener() {
+		return eventListener;
+	}
+	
+	public Simulator getSimulator() {
+		return simulator;
 	}
 	
 	public synchronized IJavaThread getThread() {

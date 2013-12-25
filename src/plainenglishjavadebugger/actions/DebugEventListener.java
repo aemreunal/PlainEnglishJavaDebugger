@@ -22,6 +22,7 @@ public class DebugEventListener implements IDebugEventSetListener {
 	private final TranslatorViewModel model;
 	private boolean isListening = false;
 	private int debugEventType = -1;
+	private boolean inDebugState = false;
 	
 	public DebugEventListener(TranslatorViewModel model) {
 		this.model = model;
@@ -30,12 +31,14 @@ public class DebugEventListener implements IDebugEventSetListener {
 	public void startListening() {
 		if (!isListening) {
 			DebugPlugin.getDefault().addDebugEventListener(this);
+			setInDebugState(true);
 		}
 	}
 	
 	public void stopListening() {
 		if (isListening) {
 			DebugPlugin.getDefault().removeDebugEventListener(this);
+			setInDebugState(false);
 		}
 	}
 	
@@ -49,7 +52,24 @@ public class DebugEventListener implements IDebugEventSetListener {
 			} else if ((debugEvent.getDetail() == DebugEvent.STEP_OVER) || (debugEvent.getDetail() == DebugEvent.STEP_INTO)) {
 				debugEventType = debugEvent.getDetail();
 			}
+			if ((debugEvent.getKind() == DebugEvent.STEP_INTO) || (debugEvent.getKind() == DebugEvent.STEP_OVER) || (debugEvent.getKind() == DebugEvent.STEP_RETURN)) {
+				model.addStacksToSimulationFrame();
+			}
 		}
 	}
+	
 	// IDebugEventSetListener interface methods end
+	
+	public boolean getInDebugState() {
+		return inDebugState;
+	}
+	
+	public synchronized void setInDebugState(boolean inDebugState) {
+		this.inDebugState = inDebugState;
+		model.setDebugging(inDebugState);
+	}
+	
+	public void setIsListening(boolean isListening) {
+		this.isListening = isListening;
+	}
 }
