@@ -9,7 +9,7 @@ In software development we have debuggers, which shows us the runtime variables,
 
 We will focus on Java language, Eclipse integrated development environment, and Eclipse's debugger.
 
-The rest of the paper has the following organization. 
+The rest of the paper has the following organization.
 *Java language, Eclipse IDE and Debugging Concept are introduced;   !!!!!!!!!!!!
 *Background, investigated domain, challenges and utilized techniques described;
 *Problem statement stated;
@@ -20,6 +20,16 @@ The rest of the paper has the following organization.
 
 
 Background:
+
+Programming is not hard to learn. What's not so easy to learn, at first, is the inner workings of the program one writes. Current mainstream programming languages (Java, in this case), hide most of the technical details. A lot of programming students who aren't into programming (!), memorize commonly used Java statements, and try to write a half-baked program from their memorizations. This approach, inevitably, is doomed. To avoid this memorization, teachers put a lot of effort into explaining the meaning of such statements - what a 'method call' means, for example. A lot of effort goes into breaking down the barriers of a student's mind. Yet, no one, other than the student, can bring those barriers down without huge efforts. This is the philosophy behind the Plain English Java Debugger (PEJD). PEJD aims to let students breathe programming, one line at a time, at their own pace.
+
+While programmng-teaching websites like CodeSchool.com & CodeAcademy.com went mainstream, they don't offer true flexibility. Most of the time, they show and explain pre-defined sets of statements, aimed to give a perspective to a student. Yet, because of the aformentioned barriers of a student's mind, flexibility (in the teacher's, in this case the website's, part) becomes a sought-after quality. The closest to what we want was in PythonTutor.com, but because that website creates just a crude representation of the memory layout of a program, and nothing more, we were left unsatisfied.
+
+PEJD's biggest strength is it's flexibility - the ability to adapt to large-scale, student-level programs, without any loss in effectiveness. When you explain a program line-by-line, does it matter how many lines there are? When a student wants to learn what a specific piece of code (or a program) does, instead of trying to piece together half-learned code snippets together in his/her mind, he/she can load it in Eclipse, run PEJD and have it explained to him/her in a human-readable language. PEJD is flexible enough to explain the basics of most of the statements a Java 101 student may encounter. With the open-source nature of the plug-in, we wanted to provide the foundations and the inspiration for future programmers to take on and expand this beautiful tool.
+
+Making the program flexible enough to be useful was the most challenging part of this task. Due to the quality, or the lack of it, of student-written code, a strict set of pre-defined, but well-explained, statement templates were doomed to fail. To achieve a useful balance, the statement structure requirements, as well as the thoroughness of explanations, were relaxed to fit the basic structure of simple statements. Printing lines to the console, method calls, instantiations, etc. were explained in general terms, but also includes links to Java tutorial websites, where the student can quench his/her curiosity.
+
+The simplest way to do this matching was to use detailed regular expressions that match statements to their appropriate explanation generation engines. These engines, again through the use of regular expressions, try to make sense out of these codes and tries to present the student a simple but useful explanation.
 
 ***********
 
