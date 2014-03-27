@@ -1,7 +1,6 @@
 package plainenglishjavadebugger.simulationModule;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -14,11 +13,13 @@ import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IVariable;
 
 @SuppressWarnings("serial")
-public class SimulationStackInfoPanel extends JPanel{
+public class SimulationStackInfoPanel extends JPanel {
 	private IStackFrame stackInfo;
+	
 	public SimulationStackInfoPanel(IStackFrame stackInfo) {
 		this.stackInfo = stackInfo;
 	}
+	
 	public void initInfoPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		try {
@@ -49,7 +50,7 @@ public class SimulationStackInfoPanel extends JPanel{
 	private String getNameWithSpaces(IVariable variable) throws DebugException {
 		String variableInfo = variable.getName() + " = " + variable.getValue();
 		int lenghtDifference = stackInfo.getName().length() - variableInfo.length();
-		if(lenghtDifference > 0) {
+		if (lenghtDifference > 0) {
 			for (int i = 0; i < lenghtDifference; i++) {
 				variableInfo += " ";
 			}

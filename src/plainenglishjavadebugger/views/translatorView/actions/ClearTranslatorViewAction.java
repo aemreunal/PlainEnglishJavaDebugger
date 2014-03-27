@@ -15,13 +15,11 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
  */
 
 public class ClearTranslatorViewAction extends Action {
-	private final TranslatorView view;
 	private final TranslatorViewModel model;
 	
 	private final String buttonText = "Clear the list";
 	
 	public ClearTranslatorViewAction(TranslatorView view) {
-		this.view = view;
 		model = view.getModel();
 		
 		setText(buttonText);
