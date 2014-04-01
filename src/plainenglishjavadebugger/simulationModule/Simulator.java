@@ -8,7 +8,7 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 /*
  * This code belongs to:
- * ‚elebi Murat
+ * Celebi Murat
  * S001751
  * celebi.murat@ozu.edu.tr
  */
@@ -19,32 +19,31 @@ public class Simulator {
 	private SimulationRunner runner;
 	
 	private final String fileSeperator = System.getProperty("file.seperator");
-
+	
 	DebugEventListener debugEventListener;
-
+	
 	public Simulator(TranslatorViewModel model) {
 		this.model = model;
 		debugEventListener = model.getEventListener();
 		simulationFrame = new SimulationStackFrame(this);
 	}
-
-	public void addStackToFrame(IStackFrame[] stackFrames)
-			throws DebugException {
+	
+	public void addStackToFrame(IStackFrame[] stackFrames) throws DebugException {
 		simulationFrame.addStackToFrame(stackFrames);
 	}
-
+	
 	public TranslatorViewModel getModel() {
 		return model;
 	}
-
+	
 	public SimulationStackFrame getSimulationFrame() {
 		return simulationFrame;
 	}
-
+	
 	public SimulationRunner getSimulationRunner() {
 		return simulationFrame.getStartListener().getSimulationRunner();
 	}
-
+	
 	public void startSimulation() {
 		if (runner == null) {
 			runner = new SimulationRunner(model);
@@ -54,7 +53,7 @@ public class Simulator {
 			runner.setIsSimulating(true);
 		}
 	}
-
+	
 	public void suspendSimulation() {
 		if (runner != null && runner.isSimulating()) {
 			runner.setIsSimulating(false);
@@ -68,13 +67,13 @@ public class Simulator {
 		String[] delimitedClassName = className.split(".");
 		return delimitedClassName[delimitedClassName.length];
 	}
-
+	
 	public void changeSimulationSpeed(int speed) {
 		if (runner != null) {
 			runner.setSleepTime(speed);
 		}
 	}
-
+	
 	public void reset() {
 		simulationFrame.removeComponentsFromContentPane();
 		simulationFrame.repaint();

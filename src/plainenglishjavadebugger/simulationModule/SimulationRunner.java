@@ -5,25 +5,23 @@ import plainenglishjavadebugger.views.translatorView.TranslatorViewModel;
 
 /*
  * This code belongs to:
- * ‚elebi Murat
+ * Celebi Murat
  * S001751
  * celebi.murat@ozu.edu.tr
  */
-
-
-
 
 public class SimulationRunner extends Thread {
 	TranslatorViewModel model;
 	DebugEventListener debugEventListener;
 	private boolean isSimulating = false;
 	private int sleepTime = 1000;
-
+	
 	public SimulationRunner(TranslatorViewModel model) {
 		this.model = model;
 		debugEventListener = model.getEventListener();
 	}
-
+	
+	@Override
 	public void run() {
 		while (debugEventListener.getInDebugState()) {
 			try {
@@ -37,15 +35,15 @@ public class SimulationRunner extends Thread {
 		}
 		System.out.println("Runner finished");
 	}
-
+	
 	public synchronized void setSleepTime(int sleepTime) {
 		this.sleepTime = sleepTime;
 	}
-
+	
 	public boolean isSimulating() {
 		return isSimulating;
 	}
-
+	
 	public synchronized void setIsSimulating(boolean isSimulating) {
 		this.isSimulating = isSimulating;
 	}
